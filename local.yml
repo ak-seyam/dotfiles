@@ -81,8 +81,12 @@
         group: '{{ username }}'
         recurse: yes
 
-    - name: Clear fish message
-      shell: 'echo "set fish_greeting" >> /home/{{ username }}/.config/fish/config.fish'
+    - name: Config fish shell
+      get_url:
+        url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/ubuntu/fish/config.fish'
+        dest: '/home/{{ username }}/.config/fish'
+        group: '{{ username }}'
+        owner: '{{ username }}'
 
     - name: Set editor
       command: 'update-alternatives --set editor /usr/bin/nvim'
