@@ -12,6 +12,7 @@
           - com.markskelton.one-dark-theme
           - IdeaVIM
           - io.github.mishkun.ideavimsneak
+  - role: gantsign.postman
 
   tasks:
     - name: install basic software 
