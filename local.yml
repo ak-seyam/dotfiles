@@ -4,7 +4,10 @@
   vars:
     username: 'unstable'
     slack_version: '4.28.184'
-    downloads_dir: '/home/{{ username }}/Downloads'
+    home_dir: '/home/{{ username }}'
+    downloads_dir: '{{ home_dir }}/Downloads'
+    conf_dir: '{{ home_dir }}/.config'
+    idea_version: 'Idea2022.2'
   roles:
   - role: gantsign.intellij
     users:
@@ -77,15 +80,16 @@
 
     - name: Create fish config if not exist
       file:
-        path: '/home/{{ username }}/.config/fish'
+        path: '{{ conf_dir }}/fish'
         owner: '{{ username }}'
         group: '{{ username }}'
+        state: directory
         recurse: yes
 
     - name: Config fish shell
       get_url:
         url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/ubuntu/fish/config.fish'
-        dest: '/home/{{ username }}/.config/fish'
+        dest: '{{ conf_dir }}/fish'
         group: '{{ username }}'
         owner: '{{ username }}'
 
@@ -101,3 +105,18 @@
 
     - name: Install slack package
       command: 'apt install {{ downloads_dir }}/slack-desktop-{{ slack_version }}-amd64.deb'
+
+    - name: Make Idea config if not exist
+        path: '{{ conf_dir }}/JetBrains/{{ idea_version }}'
+        state: directory
+        owner: '{{ username }}'
+        group: '{{ username }}'
+
+
+    - name: Copy idea config
+      get_url:
+        url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/ubuntu/JetBrains/{{ idea_version }}/options/terminal.xml'
+        dest: '{{ conf_dir }}/JetBrains/{{ idea_version }}/options/terminal.xml'
+        force: yes
+        owner: '{{ username }}'
+        group: '{{ username }}'
