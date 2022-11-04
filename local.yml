@@ -4,11 +4,12 @@
   roles:
   - role: gantsign.intellij
     users:
-      intellij_plugins: 
-        - com.haulmont.jpab
-        - com.markskelton.one-dark-theme
-        - IdeaVIM
-        - io.github.mishkun.ideavimsneak
+      - username: unstable
+        intellij_plugins: 
+          - com.haulmont.jpab
+          - com.markskelton.one-dark-theme
+          - IdeaVIM
+          - io.github.mishkun.ideavimsneak
 
   tasks:
     - name: install basic software 
