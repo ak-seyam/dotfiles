@@ -15,8 +15,6 @@
   - role: gantsign.postman
   - role: darkwizard242.googlechrome
   - role: wtanaka.slack
-    vars:
-      slack_version: '4.28.184'
 
   tasks:
     - name: Install apt-transport-https
