@@ -53,6 +53,7 @@
           - maven
           - curl
           - build-essentials
+          - ansible
         state: latest
         update_cache: true
 
