@@ -4,6 +4,7 @@
   vars:
     username: 'unstable'
     slack_version: '4.28.184'
+    downloads_dir: '/home/{{ username }}/Downloads'
   roles:
   - role: gantsign.intellij
     users:
@@ -92,7 +93,10 @@
       command: 'update-alternatives --set editor /usr/bin/nvim'
 
     - name: Download slack
-      shell: 'curl https://downloads.slack-edge.com/releases/linux/{{ slack_version }}/prod/x64/slack-desktop-{{ slack_version }}-amd64.deb > /tmp/slack-desktop-{{ slack_version }}-amd64.deb'
+      get_url: 'https://downloads.slack-edge.com/releases/linux/{{ slack_version }}/prod/x64/slack-desktop-{{ slack_version }}-amd64.deb'
+      dest: '{{ downloads_dir }}/slack-desktop-{{ slack_version }}-amd64.deb'
+      owner: '{{ username }}'
+      group: '{{ username }}'
 
     - name: Install slack package
-      command: 'apt install /tmp/slack-desktop-{{ slack_version }}-amd64.deb'
+      command: 'apt install {{ downloads_dir }}/slack-desktop-{{ slack_version }}-amd64'
