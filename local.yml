@@ -15,7 +15,6 @@
           - io.github.mishkun.ideavimsneak
   - role: gantsign.postman
   - role: darkwizard242.googlechrome
-  - role: wtanaka.slack
 
   tasks:
     - name: Install apt-transport-https
