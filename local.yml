@@ -67,3 +67,11 @@
         groups:
           - docker 
         append: yes
+    - name: Download Dconf Config
+      get_url:
+        url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/ubuntu/dconf/dconf.ini'
+        dest: '/home/{{ username }}/dconf.ini'
+    - name: Apply Dconf Config
+      shell: 'cat /home/{{ username }} /dconf.ini | dconf load /'
+    - name: Clear fish message
+      shell: 'echo "set fish_greeting" >> /home/{{ username }}/.config/fish/config.fish'
