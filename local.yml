@@ -107,7 +107,8 @@
       command: 'apt install {{ downloads_dir }}/slack-desktop-{{ slack_version }}-amd64.deb'
 
     - name: Make Idea config if not exist
-        path: '{{ conf_dir }}/JetBrains/{{ idea_version }}'
+      file:
+        path: "{{ conf_dir }}/JetBrains/{{ idea_version }}"
         state: directory
         owner: '{{ username }}'
         group: '{{ username }}'
