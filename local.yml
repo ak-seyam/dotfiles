@@ -60,5 +60,4 @@
         shell: /usr/bin/fish
         groups:
           - docker 
-          - sudo 
-          - '{{ username }}'
+        append: yes
