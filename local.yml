@@ -3,8 +3,6 @@
   become: true
   roles:
   - role: gantsign.intellij
-    vars:
-      intellij_version: 2022.2.2
     users:
       intellij_plugins: 
         - com.haulmont.jpab
