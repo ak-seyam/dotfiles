@@ -73,7 +73,7 @@
         owner: '{{ username }}'
 
     - name: Apply Dconf Config
-      shell: 'cat /home/{{ username }} /dconf.ini | dconf load /'
+      shell: 'cat /home/{{ username }}/dconf.ini | dconf load /'
 
     - name: Create Cish Config If Not Exist
       file:
