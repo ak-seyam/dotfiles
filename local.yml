@@ -3,6 +3,7 @@
   become: true
   vars:
     username: 'unstable'
+    slack_version: '4.28.184'
   roles:
   - role: gantsign.intellij
     users:
@@ -86,3 +87,9 @@
 
     - name: Set Editor
       shell: 'echo "EDITOR=vim" >> /home/{{ username }}/.xprofile'
+
+    - name: Download Slack
+      command: 'curl https://downloads.slack-edge.com/linux_releases/slack-desktop-{{ slack_version }}-amd64.deb > /tmp/slack-desktop-{{ slack_version }}-amd64.deb'
+
+    - name: Install Slack Package
+      command: 'apt install /tmp/slack-desktop-{{slack_version}}-amd64.deb'
