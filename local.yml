@@ -15,9 +15,7 @@
   - role: gantsign.postman
   - role: darkwizard242.googlechrome
 
-
   tasks:
-
     - name: Install apt-transport-https
       apt:
         name:
@@ -71,7 +69,11 @@
       get_url:
         url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/ubuntu/dconf/dconf.ini'
         dest: '/home/{{ username }}/dconf.ini'
+        group: '{{ username }}'
+        owner: '{{ username }}'
+
     - name: Apply Dconf Config
       shell: 'cat /home/{{ username }} /dconf.ini | dconf load /'
+
     - name: Clear fish message
       shell: 'echo "set fish_greeting" >> /home/{{ username }}/.config/fish/config.fish'
