@@ -85,7 +85,7 @@
       shell: 'echo "set fish_greeting" >> /home/{{ username }}/.config/fish/config.fish'
 
     - name: Set editor
-      shell: 'echo "EDITOR=vim" >> /home/{{ username }}/.xprofile'
+      command: 'update-alternatives --set editor /usr/bin/nvim'
 
     - name: Download slack
       shell: 'curl https://downloads.slack-edge.com/releases/linux/{{ slack_version }}/prod/x64/slack-desktop-{{ slack_version }}-amd64.deb > /tmp/slack-desktop-{{ slack_version }}-amd64.deb'
