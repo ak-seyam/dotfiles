@@ -45,6 +45,7 @@
           - docker-compose
           - docker-registry
           - htop
+          - dbus-x11
           - neovim
           - tmux
           - fish
