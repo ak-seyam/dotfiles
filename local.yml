@@ -7,7 +7,7 @@
     home_dir: '/home/{{ username }}'
     downloads_dir: '{{ home_dir }}/Downloads'
     conf_dir: '{{ home_dir }}/.config'
-    idea_version: 'Idea2022.2'
+    idea_version: 'IdeaIC2022.2'
   roles:
   - role: gantsign.intellij
     users:
@@ -108,10 +108,11 @@
 
     - name: Make Idea config if not exist
       file:
-        path: "{{ conf_dir }}/JetBrains/{{ idea_version }}"
+        path: "{{ conf_dir }}/JetBrains/{{ idea_version }}/options"
         state: directory
         owner: '{{ username }}'
         group: '{{ username }}'
+        recurse: yes
 
 
     - name: Copy idea config
