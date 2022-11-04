@@ -1,10 +1,12 @@
 - hosts: localhost
   connection: local
   become: true
+  vars:
+    username: unsable
   roles:
   - role: gantsign.intellij
     users:
-      - username: unstable
+      - username: {{ username }}
         intellij_plugins: 
           - com.haulmont.jpab
           - com.markskelton.one-dark-theme
@@ -23,4 +25,8 @@
           - openjdk-17-jdk
           - maven
 
+    - name: set default shell
+      user:
+        name: {{ username }}
+        shell: /usr/bin/fish
 
