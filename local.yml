@@ -1,0 +1,27 @@
+- hosts: localhost
+  connection: local
+  become: true
+  roles:
+  - role: gantsign.intellij
+    vars:
+      intellij_version: 2022.2.2
+    users:
+      intellij_plugins: 
+        - com.haulmont.jpab
+        - com.markskelton.one-dark-theme
+        - IdeaVIM
+        - io.github.mishkun.ideavimsneak
+
+  tasks:
+    - name: install basic software 
+      apt:
+        name: 
+          - htop
+          - neovim
+          - tmux
+          - fish
+          - openjdk-11-jdk
+          - openjdk-17-jdk
+          - maven
+
+
