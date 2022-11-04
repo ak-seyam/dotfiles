@@ -51,6 +51,8 @@
           - openjdk-11-jdk
           - openjdk-17-jdk
           - maven
+          - curl
+          - build-essentials
         state: latest
         update_cache: true
 
