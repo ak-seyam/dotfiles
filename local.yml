@@ -15,21 +15,6 @@
   - role: gantsign.postman
 
   tasks:
-    - name: install basic software 
-      apt:
-        name: 
-          - htop
-          - neovim
-          - tmux
-          - fish
-          - openjdk-11-jdk
-          - openjdk-17-jdk
-          - maven
-
-    - name: set default shell
-      user:
-        name: '{{ username }}'
-        shell: /usr/bin/fish
 
     - name: Install apt-transport-https
       apt:
@@ -52,12 +37,28 @@
         state: present
         filename: docker
 
-    - name: Install Docker
+    - name: Installing Software
       apt:
         name:
           - docker
           - docker.io
           - docker-compose
           - docker-registry
+          - htop
+          - neovim
+          - tmux
+          - fish
+          - openjdk-11-jdk
+          - openjdk-17-jdk
+          - maven
         state: latest
         update_cache: true
+
+    - name: Update user config
+      user:
+        name: '{{ username }}'
+        shell: /usr/bin/fish
+        groups:
+          - docker 
+          - sudo 
+          - '{{ username }}'
