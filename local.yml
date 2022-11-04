@@ -67,28 +67,28 @@
         groups:
           - docker 
         append: yes
-    - name: Download Dconf Config
+    - name: Download dconf config
       get_url:
         url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/ubuntu/dconf/dconf.ini'
         dest: '/home/{{ username }}/dconf.ini'
         group: '{{ username }}'
         owner: '{{ username }}'
 
-    - name: Create Cish Config If Not Exist
+    - name: Create fish config if not exist
       file:
         path: '/home/{{ username }}/.config/fish'
         owner: '{{ username }}'
         group: '{{ username }}'
         recurse: yes
 
-    - name: Clear Fish Message
+    - name: Clear fish message
       shell: 'echo "set fish_greeting" >> /home/{{ username }}/.config/fish/config.fish'
 
-    - name: Set Editor
+    - name: Set editor
       shell: 'echo "EDITOR=vim" >> /home/{{ username }}/.xprofile'
 
-    - name: Download Slack
+    - name: Download slack
       shell: 'curl https://downloads.slack-edge.com/releases/linux/{{ slack_version }}/prod/x64/slack-desktop-{{ slack_version }}-amd64.deb > /tmp/slack-desktop-{{ slack_version }}-amd64.deb'
 
-    - name: Install Slack Package
+    - name: Install slack package
       command: 'apt install /tmp/slack-desktop-{{ slack_version }}-amd64.deb'
