@@ -100,4 +100,4 @@
         group: '{{ username }}'
 
     - name: Install slack package
-      command: 'apt install {{ downloads_dir }}/slack-desktop-{{ slack_version }}-amd64'
+      command: 'apt install {{ downloads_dir }}/slack-desktop-{{ slack_version }}-amd64.deb'
