@@ -52,7 +52,7 @@
           - openjdk-17-jdk
           - maven
           - curl
-          - build-essentials
+          - build-essential
           - ansible
         state: latest
         update_cache: true
