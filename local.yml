@@ -2,11 +2,11 @@
   connection: local
   become: true
   vars:
-    username: unsable
+    username: 'unstable'
   roles:
   - role: gantsign.intellij
     users:
-      - username: {{ username }}
+      - username: '{{ username }}'
         intellij_plugins: 
           - com.haulmont.jpab
           - com.markskelton.one-dark-theme
@@ -27,6 +27,6 @@
 
     - name: set default shell
       user:
-        name: {{ username }}
+        name: '{{ username }}'
         shell: /usr/bin/fish
 
