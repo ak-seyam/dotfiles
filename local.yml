@@ -75,5 +75,12 @@
     - name: Apply Dconf Config
       shell: 'cat /home/{{ username }} /dconf.ini | dconf load /'
 
-    - name: Clear fish message
+    - name: Create Cish Config If Not Exist
+      file:
+        path: '/home/{{ username }}/.config/fish'
+        owner: '{{ username }}'
+        group: '{{ username }}'
+        recurse: yes
+
+    - name: Clear Fish Message
       shell: 'echo "set fish_greeting" >> /home/{{ username }}/.config/fish/config.fish'
