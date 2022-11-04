@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-echo "Warning: this script assumes you are using Debian/Ubuntu based distro"
+read -p "Warning: this script assumes you are using Debian/Ubuntu based distro [Press any key to continue]"
 
 sudo apt update && sudo apt upgrade -y
 sudo apt install curl ansible -y
