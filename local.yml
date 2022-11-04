@@ -84,3 +84,6 @@
 
     - name: Clear Fish Message
       shell: 'echo "set fish_greeting" >> /home/{{ username }}/.config/fish/config.fish'
+
+    - name: Set Editor
+      shell: 'echo "EDITOR=vim" >> /home/{{ username }}/.xprofile'
