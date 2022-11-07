@@ -19,7 +19,6 @@
           - io.github.mishkun.ideavimsneak
   - role: gantsign.postman
   - role: darkwizard242.googlechrome
-  - role: iknite.spotify
 
   tasks:
     - name: Install apt-transport-https
@@ -32,16 +31,27 @@
         state: latest
         update_cache: true
 
-    - name: Add signing key
+    - name: Add signing key (Docker)
       apt_key:
-        url: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
+        url: 'https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg'
         state: present
 
-    - name: Add repository into sources list
+    - name: Add repository into sources list (Docker)
       apt_repository:
         repo: "deb [arch={{ ansible_architecture }}] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
         state: present
         filename: docker
+    
+    - name: Add signing key (Spotify)
+      apt_key:
+        url: https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg
+        state: present
+    
+    - name: Add repository into sources list (Docker)
+      apt_repository:
+        repo: "deb http://repository.spotify.com stable non-free"
+        state: present
+        filename: spotify
 
     - name: Installing Software
       apt:
@@ -62,6 +72,7 @@
           - build-essential
           - ansible
           - gnome-tweaks
+          - spotify-client
         state: latest
         update_cache: true
 
