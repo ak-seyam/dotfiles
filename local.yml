@@ -123,3 +123,11 @@
         force: yes
         owner: '{{ username }}'
         group: '{{ username }}'
+
+    - name: Add tmux config
+      get_url: 
+        url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/ubuntu/tmux/.tmux.conf'
+        dest: '{{ home_dir }}/.tmux.conf'
+        force: yes
+        owner: '{{ username }}'
+        group: '{{ username }}'
