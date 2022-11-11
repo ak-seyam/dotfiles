@@ -157,3 +157,10 @@
         force: yes
         owner: '{{ username }}'
         group: '{{ username }}'
+    - name: Add .xprofile
+      get_url: 
+        url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/ubuntu/xprofile/.xprofile'
+        dest: '{{ home_dir }}/.xprofile'
+        force: yes
+        owner: '{{ username }}'
+        group: '{{ username }}'
