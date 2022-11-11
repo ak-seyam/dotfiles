@@ -73,6 +73,8 @@
           - ansible
           - gnome-tweaks
           - spotify-client
+          - gparted
+          - mpv
         state: latest
         update_cache: true
 
