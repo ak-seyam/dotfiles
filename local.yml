@@ -9,6 +9,12 @@
     conf_dir: '{{ home_dir }}/.config'
     idea_version: 'IdeaIC2022.2'
   roles:
+  - role: gantsign.visual-studio-code
+    users:
+      - username: '{{ username }}'
+        visual_studio_code_extensions:
+          - vscodevim.vim
+
   - role: gantsign.intellij
     users:
       - username: '{{ username }}'
@@ -41,11 +47,12 @@
         repo: "deb [arch={{ ansible_architecture }}] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
         state: present
         filename: docker
-    
+
     - name: Add signing key (Spotify)
       apt_key:
         url: https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg
         state: present
+    
     
     - name: Add repository into sources list (Spotify)
       apt_repository:
