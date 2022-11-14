@@ -25,71 +25,36 @@
           - IdeaVIM
           - io.github.mishkun.ideavimsneak
   - role: gantsign.postman
-  - role: darkwizard242.googlechrome
 
   tasks:
-    - name: Install apt-transport-https
-      apt:
-        name:
-          - apt-transport-https
-          - ca-certificates
-          - lsb-release
-          - gnupg
-        state: latest
-        update_cache: true
 
-    - name: Add signing key (Docker)
-      apt_key:
-        url: 'https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg'
-        state: present
+    - name: Adding repository (Docker)
+      command: dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
 
-    - name: Add repository into sources list (Docker)
-      apt_repository:
-        repo: "deb [arch={{ ansible_architecture }}] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
-        state: present
-        filename: docker
-    
-    - name: Add repository into sources list (GoLang)
-      apt_repository:
-        repo: "ppa:longsleep/golang-backports"
-
-    - name: Add signing key (Spotify)
-      apt_key:
-        url: https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg
-        state: present
-    
-    
-    - name: Add repository into sources list (Spotify)
-      apt_repository:
-        repo: "deb http://repository.spotify.com stable non-free"
-        state: present
-        filename: spotify
+  
+    - name: Install the 'Development tools' package group
+      ansible.builtin.dnf:
+        name: '@Development tools'
 
     - name: Installing Software
-      apt:
+      dnf:
         name:
           - docker
           - docker.io
           - docker-compose
           - docker-registry
           - htop
-          - dbus-x11
           - neovim
           - tmux
           - fish
-          - openjdk-11-jdk
-          - openjdk-17-jdk
+          - java-1.8.0-openjdk-devel.x86_64
+          - java-11-openjdk-devel.x86_64
+          - java-17-openjdk-devel.x86_64
           - maven
           - curl
-          - build-essential
-          - ansible
-          - gnome-tweaks
-          - spotify-client
           - gparted
           - mpv
-          - golang-go
-        state: latest
-        update_cache: true
+          - golang
 
     - name: Update user config
       user:
@@ -100,7 +65,7 @@
         append: yes
     - name: Download dconf config
       get_url:
-        url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/ubuntu/dconf/dconf.ini'
+        url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/fedora/dconf/dconf.ini'
         dest: '/home/{{ username }}/dconf.ini'
         group: '{{ username }}'
         owner: '{{ username }}'
@@ -115,7 +80,7 @@
 
     - name: Config fish shell
       get_url:
-        url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/ubuntu/fish/config.fish'
+        url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/fedora/fish/config.fish'
         dest: '{{ conf_dir }}/fish'
         group: '{{ username }}'
         owner: '{{ username }}'
@@ -144,7 +109,7 @@
 
     - name: Copy idea config
       get_url:
-        url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/ubuntu/JetBrains/{{ idea_version }}/options/terminal.xml'
+        url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/fedora/JetBrains/{{ idea_version }}/options/terminal.xml'
         dest: '{{ conf_dir }}/JetBrains/{{ idea_version }}/options/terminal.xml'
         force: yes
         owner: '{{ username }}'
@@ -152,15 +117,8 @@
 
     - name: Add tmux config
       get_url: 
-        url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/ubuntu/tmux/.tmux.conf'
+        url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/fedora/tmux/.tmux.conf'
         dest: '{{ home_dir }}/.tmux.conf'
-        force: yes
-        owner: '{{ username }}'
-        group: '{{ username }}'
-    - name: Add .xprofile
-      get_url: 
-        url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/ubuntu/xprofile/.xprofile'
-        dest: '{{ home_dir }}/.xprofile'
         force: yes
         owner: '{{ username }}'
         group: '{{ username }}'
