@@ -42,13 +42,14 @@
           - docker-ce
           - python-docker-py
           - python-pip
+          - docker-compose-plugin
           - htop
           - neovim
           - tmux
           - fish
-          - java-1.8.0-openjdk-devel.x86_64
-          - java-11-openjdk-devel.x86_64
-          - java-17-openjdk-devel.x86_64
+          - java-1.8.0-openjdk-devel
+          - java-11-openjdk-devel
+          - java-17-openjdk-devel
           - maven
           - curl
           - gparted
