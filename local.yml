@@ -39,10 +39,9 @@
     - name: Installing Software
       dnf:
         name:
-          - docker
-          - docker.io
-          - docker-compose
-          - docker-registry
+          - docker-ce
+          - python-docker-py
+          - python-pip
           - htop
           - neovim
           - tmux
