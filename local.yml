@@ -85,8 +85,12 @@
         group: '{{ username }}'
         owner: '{{ username }}'
 
-    - name: Set editor
-      command: 'update-alternatives --set editor /usr/bin/nvim'
+    - name: Config Env variables
+      get_url:
+        url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/fedora/environment.d/envvars.conf'
+        dest: '{{conf_dir}}/environment.d/envvars.conf'
+        group: '{{ username }}'
+        owner: '{{ username }}'
 
     - name: Download slack
       get_url: 
