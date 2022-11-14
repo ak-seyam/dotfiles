@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-read -p "Warning: this script assumes you are using Debian/Ubuntu based distro [Press return to continue]"
+read -p "Warning: this script assumes you are using Fedora (with 3rd party repositories) based distro [Press return to continue]"
 
-sudo apt update && sudo apt upgrade -y
-sudo apt install curl ansible -y
+sudo dnf update
+sudo dnf install -y curl ansible
 sudo ansible-galaxy install gantsign.intellij
 sudo ansible-galaxy install gantsign.postman
 sudo ansible-galaxy install gantsign.visual-studio-code
