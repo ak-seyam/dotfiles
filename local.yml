@@ -32,7 +32,7 @@
       command: dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
 
     - name: Add free RPM Fusion
-      command: dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+      command: "dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm"
   
     - name: Install the 'Development tools' package group
       ansible.builtin.dnf:
