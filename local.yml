@@ -3,7 +3,6 @@
   become: true
   vars:
     username: 'unstable'
-    slack_version: '4.28.184'
     home_dir: '/home/{{ username }}'
     downloads_dir: '{{ home_dir }}/Downloads'
     conf_dir: '{{ home_dir }}/.config'
@@ -98,9 +97,6 @@
         group: '{{ username }}'
         owner: '{{ username }}'
 
-    - name: Install slack
-      dnf: 
-        name: 'https://downloads.slack-edge.com/releases/linux/{{ slack_version }}/prod/x64/slack-{{ slack_version }}-0.1.el8.x86_64.rpm'
 
     - name: Make Idea config if not exist
       file:
