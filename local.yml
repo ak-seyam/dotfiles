@@ -98,15 +98,9 @@
         group: '{{ username }}'
         owner: '{{ username }}'
 
-    - name: Download slack
-      get_url: 
-        url: 'https://downloads.slack-edge.com/releases/linux/{{ slack_version }}/prod/x64/slack-desktop-{{ slack_version }}-amd64.deb'
-        dest: '{{ downloads_dir }}/slack-desktop-{{ slack_version }}-amd64.deb'
-        owner: '{{ username }}'
-        group: '{{ username }}'
-
-    - name: Install slack package
-      command: 'apt install {{ downloads_dir }}/slack-desktop-{{ slack_version }}-amd64.deb'
+    - name: Install slack
+      dnf: 
+        name: 'https://downloads.slack-edge.com/releases/linux/{{ slack_version }}/prod/x64/slack-{{ slack_version }}-0.1.el8.x86_64.rpm'
 
     - name: Make Idea config if not exist
       file:
