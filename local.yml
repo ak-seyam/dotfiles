@@ -60,7 +60,6 @@
           - maven
           - curl
           - gparted
-          - mpv
           - golang
 
     - name: Update user config
