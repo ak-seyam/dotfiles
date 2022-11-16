@@ -8,6 +8,7 @@
     downloads_dir: '{{ home_dir }}/Downloads'
     conf_dir: '{{ home_dir }}/.config'
     idea_version: 'IdeaIC2022.2'
+    idea_minro_version: '3'
   roles:
   - role: gantsign.visual-studio-code
     users:
@@ -16,14 +17,6 @@
           - vscodevim.vim
           - golang.Go
 
-  - role: gantsign.intellij
-    users:
-      - username: '{{ username }}'
-        intellij_plugins: 
-          - com.haulmont.jpab
-          - com.markskelton.one-dark-theme
-          - IdeaVIM
-          - io.github.mishkun.ideavimsneak
   - role: gantsign.postman
   - role: darkwizard242.googlechrome
 
@@ -123,6 +116,18 @@
     - name: Set editor
       command: 'update-alternatives --set editor /usr/bin/nvim'
 
+    - name: Download IntelliJ
+      get_url:
+        url: 'https://download-cdn.jetbrains.com/idea/ideaIC-2022.2.{{ idea_minro_version }}.tar.gz'
+        dest: '{{ downloads_dir }}/ideaIC-2022.2.{{ idea_minro_version }}.tar.gz'
+        owner: '{{ username }}'
+        group: '{{ username }}'
+
+    - name: UnArchive IntelliJ
+      unarchive:
+        src: '{{ downloads_dir }}/ideaIC-2022.2.{{ idea_minro_version }}.tar.gz'
+        dest: '{{ home_dir }}/bin/idea'
+      
     - name: Download slack
       get_url: 
         url: 'https://downloads.slack-edge.com/releases/linux/{{ slack_version }}/prod/x64/slack-desktop-{{ slack_version }}-amd64.deb'
