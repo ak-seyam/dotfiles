@@ -124,6 +124,14 @@
         owner: '{{ username }}'
         group: '{{ username }}'
 
+    - name: Create bin dir
+      file:
+        path: '{{ home_dir }}/bin/idea'
+        owner: '{{ username }}'
+        group: '{{ username }}'
+        state: directory
+        recurse: yes
+
     - name: UnArchive IntelliJ
       unarchive:
         src: '{{ downloads_dir }}/ideaIC-2022.2.{{ idea_minro_version }}.tar.gz'
