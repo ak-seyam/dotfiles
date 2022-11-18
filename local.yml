@@ -8,6 +8,7 @@
     downloads_dir: '{{ home_dir }}/Downloads'
     conf_dir: '{{ home_dir }}/.config'
     idea_version: 'IdeaIC2022.2'
+    idea_download_version: 'ideaIC-2022.2'
     idea_minro_version: '3'
   roles:
   - role: gantsign.visual-studio-code
@@ -118,7 +119,7 @@
 
     - name: Download IntelliJ
       get_url:
-        url: 'https://download-cdn.jetbrains.com/idea/ideaIC-2022.2.{{ idea_minro_version }}.tar.gz'
+        url: 'https://download-cdn.jetbrains.com/idea/{{ idea_download_version }}.{{ idea_minro_version }}.tar.gz'
         dest: '{{ downloads_dir }}/ideaIC-2022.2.{{ idea_minro_version }}.tar.gz'
         owner: '{{ username }}'
         group: '{{ username }}'
