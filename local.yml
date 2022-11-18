@@ -136,6 +136,22 @@
       unarchive:
         src: '{{ downloads_dir }}/ideaIC-2022.2.{{ idea_minro_version }}.tar.gz'
         dest: '{{ home_dir }}/bin/idea'
+
+    - name: Create idea desktop entry
+      copy:
+        dest: '/usr/share/applications/jetbrains-idea-ce.desktop'
+        content: |
+          [Desktop Entry]
+          Version=1.0
+          Type=Application
+          Name=IntelliJ IDEA Community Edition
+          Icon={{home_dir}}/bin/idea/idea-IC-222.4345.14/bin/idea.svg
+          Exec="{{home_dir}}/bin/idea/idea-IC-222.4345.14/bin/idea.sh" %f
+          Comment=Capable and Ergonomic IDE for JVM
+          Categories=Development;IDE;
+          Terminal=false
+          StartupWMClass=jetbrains-idea-ce
+          StartupNotify=true
       
     - name: Download slack
       get_url: 
