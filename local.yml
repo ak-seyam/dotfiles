@@ -13,8 +13,8 @@
     idea_extract_version: 'idea-IC-222.4345.14'
     jpa_buddy_download_url: 'https://plugins.jetbrains.com/files/15075/251505/jpa-buddy-2022.4.6-222.zip'
     jpa_buddy_file_name: 'jpa-buddy-2022.4.6-222.zip'
-    idea_vim_download_url: 'https://plugins.jetbrains.com/files/164/245831/IdeaVim-2.0.0.zip'
-    idea_vim_file_name: 'IdeaVim-2.0.0.zip'
+    idea_vim_download_url: 'https://plugins.jetbrains.com/files/164/208284/IdeaVim-1.11.1.zip'
+    idea_vim_file_name: 'IdeaVim-1.11.1.zip'
     one_dark_download_url: 'https://plugins.jetbrains.com/files/11938/250297/one-dark-theme-5.7.1.zip'
     one_dark_file_name: 'one-dark-theme-5.7.1.zip'
 
@@ -206,16 +206,22 @@
       unarchive:
         src: '{{ downloads_dir }}/{{ jpa_buddy_file_name }}'
         dest: '/home/{{ username }}/.local/share/JetBrains/{{ idea_version }}'
+        owner: '{{ username }}'
+        group: '{{ username }}'
 
     - name: Install IDEAVim
       unarchive:
         src: '{{ downloads_dir }}/{{ idea_vim_file_name }}'
         dest: '/home/{{ username }}/.local/share/JetBrains/{{ idea_version }}'
+        owner: '{{ username }}'
+        group: '{{ username }}'
 
     - name: Install one dark Theme
       unarchive:
         src: '{{ downloads_dir }}/{{ one_dark_file_name }}'
         dest: '/home/{{ username }}/.local/share/JetBrains/{{ idea_version }}'
+        owner: '{{ username }}'
+        group: '{{ username }}'
 
     - name: Make Idea config if not exist
       file:
