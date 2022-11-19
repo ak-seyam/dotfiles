@@ -15,6 +15,8 @@
     jpa_buddy_file_name: 'jpa-buddy-2022.4.6-222.zip'
     idea_vim_download_url: 'https://plugins.jetbrains.com/files/164/245831/IdeaVim-2.0.0.zip'
     idea_vim_file_name: 'IdeaVim-2.0.0.zip'
+    one_dark_download_url: 'https://plugins.jetbrains.com/files/11938/250297/one-dark-theme-5.7.1.zip'
+    one_dark_file_name: 'one-dark-theme-5.7.1.zip'
 
   roles:
   - role: gantsign.visual-studio-code
@@ -185,6 +187,13 @@
         owner: '{{ username }}'
         group: '{{ username }}'
 
+    - name: Download OneDark Theme
+      get_url:
+        url: '{{ one_dark_download_url }}'
+        dest: '{{ downloads_dir }}/{{ one_dark_file_name }}'
+        owner: '{{ username }}'
+        group: '{{ username }}'
+
     - name: Create Idea plugins dir
       file:
         path: '/home/{{ username }}/.local/share/JetBrains/{{ idea_version }}' 
@@ -201,6 +210,11 @@
     - name: Install IDEAVim
       unarchive:
         src: '{{ downloads_dir }}/{{ idea_vim_file_name }}'
+        dest: '/home/{{ username }}/.local/share/JetBrains/{{ idea_version }}'
+
+    - name: Install one dark Theme
+      unarchive:
+        src: '{{ downloads_dir }}/{{ one_dark_file_name }}'
         dest: '/home/{{ username }}/.local/share/JetBrains/{{ idea_version }}'
 
     - name: Make Idea config if not exist
