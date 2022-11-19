@@ -170,7 +170,7 @@
     - name: copy idea config (for ui)
       get_url:
         url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/ubuntu/JetBrains/{{ idea_version }}/options/ui.Ilnf.xml'
-        dest: '{{ conf_dir }}/jetbrains/{{ idea_version }}/options/ui.Ilnf.xml'
+        dest: '{{ conf_dir }}/JetBrains/{{ idea_version }}/options/ui.Ilnf.xml'
         force: yes
         owner: '{{ username }}'
         group: '{{ username }}'
@@ -178,7 +178,7 @@
     - name: copy idea config (for fonts)
       get_url:
         url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/ubuntu/JetBrains/{{ idea_version }}/options/editor-font.xml'
-        dest: '{{ conf_dir }}/jetbrains/{{ idea_version }}/options/editor-font.xml'
+        dest: '{{ conf_dir }}/JetBrains/{{ idea_version }}/options/editor-font.xml'
         force: yes
         owner: '{{ username }}'
         group: '{{ username }}'
