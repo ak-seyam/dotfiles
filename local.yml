@@ -141,6 +141,14 @@
         src: '{{ downloads_dir }}/ideaIC-2022.2.{{ idea_minro_version }}.tar.gz'
         dest: '{{ idea_dir }}'
 
+    - name: Make nvim config dir
+      file:
+        path: "{{ conf_dir }}/nvim"
+        state: directory
+        owner: '{{ username }}'
+        group: '{{ username }}'
+        recurse: yes
+
     - name: Ignore case in vim
       copy:
         dest: '{{ conf_dir }}/nvim/init.vim'
