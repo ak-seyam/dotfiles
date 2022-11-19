@@ -7,4 +7,3 @@ sudo ansible-galaxy install gantsign.postman
 sudo ansible-galaxy install gantsign.visual-studio-code
 
 sudo ansible-pull -U https://github.com/A-Siam/dotfiles -C fedora --extra-vars="username=$USER"
-cat "/home/$USER/dconf.ini" | dconf load /
