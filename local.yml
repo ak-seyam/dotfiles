@@ -192,7 +192,7 @@
 
     - name: Copy idea config (For UI)
       get_url:
-        url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/ubuntu/JetBrains/{{ idea_version }}/options/ui.lnf.xml'
+        url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/ubuntu/JetBrains/{{ idea_version }}/options/ui.Ilnf.xml'
         dest: '{{ conf_dir }}/JetBrains/{{ idea_version }}/options/ui.Ilnf.xml'
         force: yes
         owner: '{{ username }}'
