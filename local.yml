@@ -13,6 +13,9 @@
     idea_extract_version: 'idea-IC-222.4345.14'
     jpa_buddy_download_url: 'https://plugins.jetbrains.com/files/15075/251505/jpa-buddy-2022.4.6-222.zip'
     jpa_buddy_file_name: 'jpa-buddy-2022.4.6-222.zip'
+    idea_vim_download_url: 'https://plugins.jetbrains.com/files/164/245831/IdeaVim-2.0.0.zip'
+    idea_vim_file_name: 'IdeaVim-2.0.0.zip'
+
   roles:
   - role: gantsign.visual-studio-code
     users:
@@ -175,6 +178,13 @@
         owner: '{{ username }}'
         group: '{{ username }}'
 
+    - name: Download IDEAVim plugin
+      get_url:
+        url: '{{ idea_vim_download_url }}'
+        dest: '{{ downloads_dir }}/{{ idea_vim_file_name }}'
+        owner: '{{ username }}'
+        group: '{{ username }}'
+
     - name: Create Idea plugins dir
       file:
         path: '/home/{{ username }}/.local/share/JetBrains/{{ idea_version }}' 
@@ -188,6 +198,10 @@
         src: '{{ downloads_dir }}/{{ jpa_buddy_file_name }}'
         dest: '/home/{{ username }}/.local/share/JetBrains/{{ idea_version }}'
 
+    - name: Install IDEAVim
+      unarchive:
+        src: '{{ downloads_dir }}/{{ idea_vim_file_name }}'
+        dest: '/home/{{ username }}/.local/share/JetBrains/{{ idea_version }}'
 
     - name: Make Idea config if not exist
       file:
