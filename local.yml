@@ -31,17 +31,22 @@
     - name: Adding repository (Docker)
       shell: dnf config-manager -y --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
 
+    - name: Install google chrome
+      dnf:
+        name:
+          - 'https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm'
+
     - name: Enable the RPM Fusion repository
       dnf:
         name: 
-          - "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
-          - "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+          - 'https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm'
+          - 'https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm'
         state: present
 
     - name: Install MS fonts
       dnf:
         name: 
-          - "https://downloads.sourceforge.net/project/mscorefonts2/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm"
+          - 'https://downloads.sourceforge.net/project/mscorefonts2/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm'
   
     - name: Install the 'Development tools' package group
       ansible.builtin.dnf:
@@ -119,7 +124,7 @@
 
     - name: Make nvim config dir
       file:
-        path: "{{ conf_dir }}/nvim"
+        path: '{{ conf_dir }}/nvim'
         state: directory
         owner: '{{ username }}'
         group: '{{ username }}'
@@ -151,7 +156,7 @@
       
     - name: Make Idea config if not exist
       file:
-        path: "{{ conf_dir }}/JetBrains/{{ idea_version }}/options"
+        path: '{{ conf_dir }}/JetBrains/{{ idea_version }}/options'
         state: directory
         owner: '{{ username }}'
         group: '{{ username }}'
@@ -241,7 +246,7 @@
 
     - name: Make Idea config if not exist
       file:
-        path: "{{ conf_dir }}/JetBrains/{{ idea_version }}/options"
+        path: '{{ conf_dir }}/JetBrains/{{ idea_version }}/options'
         state: directory
         owner: '{{ username }}'
         group: '{{ username }}'
