@@ -17,6 +17,10 @@
     idea_vim_file_name: 'IdeaVim-1.11.1.zip'
     one_dark_download_url: 'https://plugins.jetbrains.com/files/11938/250297/one-dark-theme-5.7.1.zip'
     one_dark_file_name: 'one-dark-theme-5.7.1.zip'
+    robo_pojo_dowload_url: 'https://plugins.jetbrains.com/files/8634/247576/RoboPOJOGenerator-2.3.8.zip'
+    robo_pojo_file_name: 'RoboPOJOGenerator-2.3.8.zip'
+    git_toolbox_download_url : 'https://plugins.jetbrains.com/files/7499/251720/gittoolbox-212.10.1.zip'
+    git_toolbox_file_name : 'gittoolbox-212.10.1.zip'
 
   roles:
   - role: gantsign.visual-studio-code
@@ -208,6 +212,20 @@
         owner: '{{ username }}'
         group: '{{ username }}'
 
+    - name: Download RoboPojo plugin
+      get_url:
+        url: '{{ robo_pojo_dowload_url }}'
+        dest: '{{ downloads_dir }}/{{ robo_pojo_file_name }}'
+        owner: '{{ username }}'
+        group: '{{ username }}'
+
+    - name: Download GitToolBox plugin
+      get_url:
+        url: '{{ git_toolbox_download_url }}'
+        dest: '{{ downloads_dir }}/{{ git_toolbox_file_name }}'
+        owner: '{{ username }}'
+        group: '{{ username }}'
+
     - name: Download OneDark Theme
       get_url:
         url: '{{ one_dark_download_url }}'
@@ -230,6 +248,13 @@
         owner: '{{ username }}'
         group: '{{ username }}'
 
+    - name: Install Git Toolbox
+      unarchive:
+        src: '{{ downloads_dir }}/{{ git_toolbox_file_name }}'
+        dest: '/home/{{ username }}/.local/share/JetBrains/{{ idea_version }}'
+        owner: '{{ username }}'
+        group: '{{ username }}'
+
     - name: Install IDEAVim
       unarchive:
         src: '{{ downloads_dir }}/{{ idea_vim_file_name }}'
@@ -240,6 +265,13 @@
     - name: Install one dark Theme
       unarchive:
         src: '{{ downloads_dir }}/{{ one_dark_file_name }}'
+        dest: '/home/{{ username }}/.local/share/JetBrains/{{ idea_version }}'
+        owner: '{{ username }}'
+        group: '{{ username }}'
+
+    - name: Install robo pojo
+      unarchive:
+        src: '{{ downloads_dir }}/{{ robo_pojo_file_name }}'
         dest: '/home/{{ username }}/.local/share/JetBrains/{{ idea_version }}'
         owner: '{{ username }}'
         group: '{{ username }}'
