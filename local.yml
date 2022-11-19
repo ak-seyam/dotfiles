@@ -200,6 +200,15 @@
         owner: '{{ username }}'
         group: '{{ username }}'
 
+    - name: Copy idea config (For UI)
+      get_url:
+        url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/ubuntu/JetBrains/{{ idea_version }}/options/editor-font.xml'
+        dest: '{{ conf_dir }}/JetBrains/{{ idea_version }}/options/editor-font.xml'
+        force: yes
+        owner: '{{ username }}'
+        group: '{{ username }}'
+    
+
     - name: Link /usr/bin/idea to idea.sh
       file:
         src: '{{ idea_dir }}/{{ idea_extract_version }}/bin/idea.sh'
