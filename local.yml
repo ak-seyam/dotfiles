@@ -140,6 +140,8 @@
       unarchive:
         src: '{{ downloads_dir }}/ideaIC-2022.2.{{ idea_minro_version }}.tar.gz'
         dest: '{{ idea_dir }}'
+        owner: '{{ username }}'
+        group: '{{ username }}'
 
     - name: Make nvim config dir
       file:
@@ -223,6 +225,24 @@
       unarchive:
         src: '{{ downloads_dir }}/{{ jpa_buddy_file_name }}'
         dest: '/home/{{ username }}/.local/share/JetBrains/{{ idea_version }}'
+        owner: '{{ username }}'
+        group: '{{ username }}'
+
+    - name: Install IDEAVim
+      unarchive:
+        src: '{{ downloads_dir }}/{{ idea_vim_file_name }}'
+        dest: '/home/{{ username }}/.local/share/JetBrains/{{ idea_version }}'
+        owner: '{{ username }}'
+        group: '{{ username }}'
+
+    - name: Install one dark Theme
+      unarchive:
+        src: '{{ downloads_dir }}/{{ one_dark_file_name }}'
+        dest: '/home/{{ username }}/.local/share/JetBrains/{{ idea_version }}'
+        owner: '{{ username }}'
+        group: '{{ username }}'
+
+
 
     - name: Download slack
       get_url: 
