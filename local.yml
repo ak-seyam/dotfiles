@@ -37,6 +37,11 @@
           - "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
           - "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"
         state: present
+
+    - name: Install MS fonts
+      dnf:
+        name: 
+          - "https://downloads.sourceforge.net/project/mscorefonts2/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm"
   
     - name: Install the 'Development tools' package group
       ansible.builtin.dnf:
@@ -69,12 +74,6 @@
         groups:
           - docker 
         append: yes
-    - name: Download dconf config
-      get_url:
-        url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/fedora/dconf/dconf.ini'
-        dest: '/home/{{ username }}/dconf.ini'
-        group: '{{ username }}'
-        owner: '{{ username }}'
 
     - name: Create fish config if not exist
       file:
