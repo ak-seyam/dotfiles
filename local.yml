@@ -10,6 +10,10 @@
     idea_version: 'IdeaIC2022.2'
     idea_download_version: 'ideaIC-2022.2'
     idea_minro_version: '3'
+    idea_dir: '/opt'
+    idea_extract_version: 'idea-IC-222.4345.14'
+    jpa_buddy_download_url: 'https://plugins.jetbrains.com/files/15075/251505/jpa-buddy-2022.4.6-222.zip'
+    jpa_buddy_file_name: 'jpa-buddy-2022.4.6-222.zip'
   roles:
   - role: gantsign.visual-studio-code
     users:
@@ -135,7 +139,7 @@
     - name: UnArchive IntelliJ
       unarchive:
         src: '{{ downloads_dir }}/ideaIC-2022.2.{{ idea_minro_version }}.tar.gz'
-        dest: '{{ home_dir }}/bin/idea'
+        dest: '{{ idea_dir }}'
 
     - name: Create idea desktop entry
       copy:
@@ -145,14 +149,64 @@
           Version=1.0
           Type=Application
           Name=IntelliJ IDEA Community Edition
-          Icon={{home_dir}}/bin/idea/idea-IC-222.4345.14/bin/idea.svg
-          Exec="{{home_dir}}/bin/idea/idea-IC-222.4345.14/bin/idea.sh" %f
+          Icon={{ idea_dir }}/{{ idea_extract_version }}/bin/idea.svg
+          Exec="{{ idea_dir }}/{{ idea_extract_version }}/bin/idea.sh" %f
           Comment=Capable and Ergonomic IDE for JVM
           Categories=Development;IDE;
           Terminal=false
           StartupWMClass=jetbrains-idea-ce
           StartupNotify=true
       
+    - name: Make Idea config if not exist
+      file:
+        path: "{{ conf_dir }}/JetBrains/{{ idea_version }}/options"
+        state: directory
+        owner: '{{ username }}'
+        group: '{{ username }}'
+        recurse: yes
+
+
+    - name: Copy idea config (For terminal)
+      get_url:
+        url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/ubuntu/JetBrains/{{ idea_version }}/options/terminal.xml'
+        dest: '{{ conf_dir }}/JetBrains/{{ idea_version }}/options/terminal.xml'
+        force: yes
+        owner: '{{ username }}'
+        group: '{{ username }}'
+
+    - name: Copy idea config (For UI)
+      get_url:
+        url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/ubuntu/JetBrains/{{ idea_version }}/options/ui.lnf.xml'
+        dest: '{{ conf_dir }}/JetBrains/{{ idea_version }}/options/ui.Ilnf.xml'
+        force: yes
+        owner: '{{ username }}'
+        group: '{{ username }}'
+
+    - name: Link /usr/bin/idea to idea.sh
+      file:
+        src: '{{ idea_dir }}/{{ idea_extract_version }}/bin/idea.sh'
+        dest: '/usr/bin/idea'
+        state: link
+
+    - name: Download JPA buddy IDEA plugin
+      get_url: 
+        url: '{{ jpa_buddy_download_url }}'
+        dest: '{{ downloads_dir }}/{{ jpa_buddy_file_name }}'
+        owner: '{{ username }}'
+        group: '{{ username }}'
+
+    - name: Create Idea plugins dir
+        path: '/home/{{ username }}/.local/share/JetBrains/{{ idea_version }}' 
+        state: directory
+        owner: '{{ username }}'
+        group: '{{ username }}'
+        recurse: yes
+
+    - name: Install JPA buddy 
+      unarchive:
+        src: '{{ downloads_dir }}/{{ jpa_buddy_file_name }}'
+        dest: '/home/{{ username }}/.local/share/JetBrains/{{ idea_version }}'
+
     - name: Download slack
       get_url: 
         url: 'https://downloads.slack-edge.com/releases/linux/{{ slack_version }}/prod/x64/slack-desktop-{{ slack_version }}-amd64.deb'
@@ -163,22 +217,6 @@
     - name: Install slack package
       command: 'apt install {{ downloads_dir }}/slack-desktop-{{ slack_version }}-amd64.deb'
 
-    - name: Make Idea config if not exist
-      file:
-        path: "{{ conf_dir }}/JetBrains/{{ idea_version }}/options"
-        state: directory
-        owner: '{{ username }}'
-        group: '{{ username }}'
-        recurse: yes
-
-
-    - name: Copy idea config
-      get_url:
-        url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/ubuntu/JetBrains/{{ idea_version }}/options/terminal.xml'
-        dest: '{{ conf_dir }}/JetBrains/{{ idea_version }}/options/terminal.xml'
-        force: yes
-        owner: '{{ username }}'
-        group: '{{ username }}'
 
     - name: Add tmux config
       get_url: 
@@ -187,6 +225,7 @@
         force: yes
         owner: '{{ username }}'
         group: '{{ username }}'
+
     - name: Add .xprofile
       get_url: 
         url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/ubuntu/xprofile/.xprofile'
