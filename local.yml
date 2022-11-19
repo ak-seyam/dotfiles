@@ -91,6 +91,14 @@
         group: '{{ username }}'
         owner: '{{ username }}'
 
+    - name: Craete environment dir
+      file:
+        path: '{{conf_dir}}/environment.d'
+        state: directory
+        owner: '{{ username }}'
+        group: '{{ username }}'
+        recurse: yes
+
     - name: Config Env variables
       get_url:
         url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/fedora/environment.d/envvars.conf'
