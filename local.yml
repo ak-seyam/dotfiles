@@ -141,6 +141,14 @@
         src: '{{ downloads_dir }}/ideaIC-2022.2.{{ idea_minro_version }}.tar.gz'
         dest: '{{ idea_dir }}'
 
+    - name: Ignore case in vim
+      copy:
+        dest: '{{ conf_dir }}/nvim/init.vim'
+        content: |
+          set ignorecase
+          set number
+          set rnu
+
     - name: Create idea desktop entry
       copy:
         dest: '/usr/share/applications/jetbrains-idea-ce.desktop'
@@ -196,6 +204,7 @@
         group: '{{ username }}'
 
     - name: Create Idea plugins dir
+      file:
         path: '/home/{{ username }}/.local/share/JetBrains/{{ idea_version }}' 
         state: directory
         owner: '{{ username }}'
