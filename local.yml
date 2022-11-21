@@ -48,6 +48,9 @@
          state: directory
          recurse: yes
 
+    - name: Adding repository (Wine)
+      shell: sudo dnf config-manager --add-repo https://dl.winehq.org/wine-builds/fedora/{{ ansible_distribution_major_version }}/winehq.repo
+
     - name: Adding repository (Docker)
       shell: dnf config-manager -y --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
 
@@ -77,6 +80,7 @@
         name:
           - docker-ce 
           - docker-ce-cli 
+          - winehq-stable
           - containerd.io
           - python-pip
           - docker-compose-plugin
