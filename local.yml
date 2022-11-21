@@ -41,12 +41,12 @@
         recurse: yes
 
     - name: Create config dir
-       file:
-         path: '{{ conf_dir }}'
-         owner: '{{ username }}'
-         group: '{{ username }}'
-         state: directory
-         recurse: yes
+      file:
+        path: '{{ conf_dir }}'
+        owner: '{{ username }}'
+        group: '{{ username }}'
+        state: directory
+        recurse: yes
 
     - name: Adding repository (Wine)
       shell: sudo dnf config-manager --add-repo https://dl.winehq.org/wine-builds/fedora/{{ ansible_distribution_major_version }}/winehq.repo
