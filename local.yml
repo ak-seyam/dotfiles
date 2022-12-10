@@ -124,13 +124,13 @@
     - name: Download IntelliJ
       get_url:
         url: 'https://download-cdn.jetbrains.com/idea/{{ idea_download_version }}.{{ idea_minro_version }}.tar.gz'
-        dest: '{{ downloads_dir }}/ideaIC-2022.2.{{ idea_minro_version }}.tar.gz'
+        dest: '{{ downloads_dir }}/{{ idea_download_version }}.{{ idea_minro_version }}.tar.gz'
         owner: '{{ username }}'
         group: '{{ username }}'
 
     - name: UnArchive IntelliJ
       unarchive:
-        src: '{{ downloads_dir }}/ideaIC-2022.2.{{ idea_minro_version }}.tar.gz'
+        src: '{{ downloads_dir }}/{{ idea_download_version }}.{{ idea_minro_version }}.tar.gz'
         dest: '{{ idea_dir }}'
 
     - name: Make nvim config dir
