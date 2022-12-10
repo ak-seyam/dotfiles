@@ -176,7 +176,7 @@
 
     - name: Copy idea config (For terminal)
       get_url:
-        url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/ubuntu/JetBrains/{{ idea_version }}/options/terminal.xml'
+        url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/fedora/JetBrains/{{ idea_version }}/options/terminal.xml'
         dest: '{{ conf_dir }}/JetBrains/{{ idea_version }}/options/terminal.xml'
         force: yes
         owner: '{{ username }}'

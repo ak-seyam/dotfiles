@@ -5,9 +5,7 @@
 set -e
 
 echo "instlling dependencies"
-if ! command -v git &> /dev/null; then
-    
-fi
+sudo dnf install -y git ripgrep
 
 ############ Configuration ############
 nvim_conf_path=$HOME/.config/nvim

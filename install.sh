@@ -10,3 +10,4 @@ sudo ansible-pull -U https://github.com/A-Siam/dotfiles -C fedora --extra-vars="
 if [[ $PWD == "*dotfiles" ]]; then
     dconf load /org/gnome/ < ./dconf/gnome.init
 fi
+chmod +x ./.scripts/vim_bootstrap.sh
