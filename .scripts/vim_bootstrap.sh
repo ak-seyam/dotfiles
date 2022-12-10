@@ -98,7 +98,7 @@ require('lualine').setup {
 }
 
 require("nvim-treesitter.configs").setup {
-    ensure_installed = { 'lua', 'bash', 'fish', 'java', 'go' },
+    ensure_installed = { 'lua', 'bash', 'fish', 'java', 'go', 'yaml' },
     highlight = {
         enable = true,
     },
