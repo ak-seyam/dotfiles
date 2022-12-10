@@ -192,7 +192,7 @@
 
     - name: copy idea config (for fonts)
       get_url:
-        url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/ubuntu/JetBrains/{{ idea_version }}/options/editor-font.xml'
+        url: 'https://raw.githubusercontent.com/A-Siam/dotfiles/fedora/JetBrains/IdeaIC2022.3/options/editor-font.xml'
         dest: '{{ conf_dir }}/JetBrains/{{ idea_version }}/options/editor-font.xml'
         force: yes
         owner: '{{ username }}'
