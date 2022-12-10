@@ -10,7 +10,7 @@
     idea_download_version: 'ideaIC-2022.3'
     idea_minro_version: '' # remember to add the dot separator here
     idea_dir: '/opt'
-    idea_extract_version: 'idea-IC-222.4345.14'
+    idea_extract_version: 'idea-IC-223.7571.182'
     jpa_buddy_download_url: 'https://plugins.jetbrains.com/files/15075/251505/jpa-buddy-2022.4.6-222.zip'
     jpa_buddy_file_name: 'jpa-buddy-2022.4.6-222.zip'
     idea_vim_download_url: 'https://plugins.jetbrains.com/files/164/208284/IdeaVim-1.11.1.zip'
