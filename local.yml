@@ -68,7 +68,6 @@
         name:
           - docker-ce 
           - docker-ce-cli 
-          - winehq-stable
           - containerd.io
           - python-pip
           - docker-compose-plugin
