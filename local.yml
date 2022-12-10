@@ -141,14 +141,6 @@
         group: '{{ username }}'
         recurse: yes
 
-    - name: Ignore case in vim
-      copy:
-        dest: '{{ conf_dir }}/nvim/init.vim'
-        content: |
-          set ignorecase
-          set number
-          set rnu
-
     - name: Create idea desktop entry
       copy:
         dest: '/usr/share/applications/jetbrains-idea-ce.desktop'
