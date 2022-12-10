@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 # This is is a nvim bootstraping script for linux
-# git, gnu core utils are required for this script it required 
+# git, gnu core utils, and ripgrep are required for this script it required 
 
 set -e
+
+echo "instlling dependencies"
+if ! command -v git &> /dev/null; then
+    
+fi
 
 ############ Configuration ############
 nvim_conf_path=$HOME/.config/nvim
@@ -24,10 +29,6 @@ echo "create plugins dir"
 mkdir -p $nvim_plugins_dir
 mkdir -p $nvim_opt_plugins_dir
 
-if ! command -v git &> /dev/null; then
-    echo "git is required for this script, please install git"
-    exit 1
-fi
 
 echo "create init file"
 cat > $nvim_conf_path/init.vim << EOT
@@ -66,7 +67,8 @@ nnoremap <leader>ff :packadd telescope<cr>:Telescope find_files<cr>
 nnoremap <leader>fg :packadd telescope<cr>:Telescope live_grep<cr>
 nnoremap <leader>fb :packadd telescope<cr>:Telescope buffers<cr>
 nnoremap <leader>fh :packadd telescope<cr>:Telescope help_tags<cr>
-nnoremap <c-t> :tabnew 
+nnoremap <c-t> :tabnew<cr>
+nnoremap <leader>tt <c-w>v:term<cr>
 EOT
 
 ############ Plugin installation ############
