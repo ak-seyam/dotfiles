@@ -1,4 +1,4 @@
-# Ansible based ubuntu config
+# Ansible based Linux(Fedora) config
 ## Installation
 ```bash
 chmod +x ./install.sh
