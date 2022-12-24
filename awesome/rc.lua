@@ -14,6 +14,8 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
+local cyclefocus = require('awesome-cyclefocus')
+
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
@@ -248,6 +250,13 @@ root.buttons(gears.table.join(
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
+    awful.key({ "Mod1" }, "Tab", function(c)
+        cyclefocus.cycle({modifier="Alt_L"})
+    end),
+    -- modkey+Shift+Tab: backwards
+    awful.key({ "Mod1", "Shift" }, "Tab", function(c)
+        cyclefocus.cycle({modifier="Alt_L"})
+    end),
     awful.key({ modkey,           }, "w",  function() awful.util.spawn("google-chrome") end ,
               {description="open google chrome", group="awesome"}),
     awful.key({ }, "XF86AudioRaiseVolume",  function() awful.util.spawn("pamixer --allow-boost -i 10") end ,
@@ -297,15 +306,6 @@ globalkeys = gears.table.join(
               {description = "focus the previous screen", group = "screen"}),
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
               {description = "jump to urgent client", group = "client"}),
-    awful.key({ modkey,           }, "Tab",
-        function ()
-            awful.client.focus.history.previous()
-            if client.focus then
-                client.focus:raise()
-            end
-        end,
-        {description = "go back", group = "client"}),
-
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
