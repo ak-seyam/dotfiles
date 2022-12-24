@@ -7,4 +7,5 @@ nm-applet&
 picom --vsync --backend glx&
 udiskie -t&
 export $(dbus-launch)
+export LS_COLORS="ow=34;21"
 exec awesome
