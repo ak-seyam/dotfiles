@@ -52,9 +52,6 @@ end
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(os.getenv("HOME") .. "/.config/awesome/custom_zenburn/theme.lua")
 
--- my modules
-local power_menu = require("menus.power_menu")
-
 -- This is used later as the default terminal and editor to run.
 terminal = "x-terminal-emulator"
 editor = os.getenv("EDITOR") or "editor"
@@ -261,8 +258,6 @@ globalkeys = gears.table.join(
               {description="toggle mute", group="awesome"}),
     awful.key({ }, "XF86AudioPause",  function() awful.util.spawn("playerctl play-pause") end ,
               {description="play-pause", group="awesome"}),
-    awful.key({ modkey, "Control" }, "p", power_menu.execute ,
-              {description="test power options", group="awesome"}),
     awful.key({  }, "XF86MonBrightnessUp",  function() awful.util.spawn("brightnessctl set 15+") end ,
               {description="brightness up", group="awesome"}),
     awful.key({  }, "XF86MonBrightnessDown",  function() awful.util.spawn("brightnessctl set 15-") end ,
