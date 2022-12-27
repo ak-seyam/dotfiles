@@ -259,6 +259,8 @@ globalkeys = gears.table.join(
     end),
     awful.key({ modkey,           }, "w",  function() awful.util.spawn("google-chrome") end ,
               {description="open google chrome", group="awesome"}),
+    awful.key({ modkey,           }, "i",  function() awful.util.spawn("gtk-launch jetbrains-idea-ce.desktop") end ,
+              {description="open google chrome", group="awesome"}),
     awful.key({ }, "XF86AudioRaiseVolume",  function() awful.util.spawn("pamixer --allow-boost -i 10") end ,
               {description="increase volume", group="awesome"}),
     awful.key({ }, "XF86AudioLowerVolume",  function() awful.util.spawn("pamixer -d 10") end ,
@@ -326,10 +328,10 @@ globalkeys = gears.table.join(
               {description = "increase the number of columns", group = "layout"}),
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
               {description = "decrease the number of columns", group = "layout"}),
-    awful.key({ modkey,           }, "space", function () awful.layout.inc( 1)                end,
-              {description = "select next", group = "layout"}),
-    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
-              {description = "select previous", group = "layout"}),
+    -- awful.key({ modkey,           }, "space", function () awful.layout.inc( 1)                end,
+    --           {description = "select next", group = "layout"}),
+    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(1)                end,
+              {description = "next layout", group = "layout"}),
 
     awful.key({ modkey, "Control" }, "n",
               function ()
@@ -371,9 +373,9 @@ clientkeys = gears.table.join(
         {description = "toggle fullscreen", group = "client"}),
     awful.key({ modkey, "Shift"   }, "q",      function (c) c:kill()                         end,
               {description = "close", group = "client"}),
-    awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ,
+    awful.key({ modkey, "Shift" }, "[",  awful.client.floating.toggle                     ,
               {description = "toggle floating", group = "client"}),
-    awful.key({ modkey, "Shift" }, "u", function (c) c:swap(awful.client.getmaster()) end,
+    awful.key({ modkey,  }, "z", function (c) c:swap(awful.client.getmaster()) end,
               {description = "move to master", group = "client"}),
     awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end,
               {description = "move to screen", group = "client"}),
@@ -491,6 +493,12 @@ awful.rules.rules = {
     },
 
     -- workspace roles
+    { rule = { class = "DBeaver" },
+     properties = { tag = "3" , switchtotag=true } },
+    { rule = { class = "Zathura" },
+     properties = { tag = "4" , switchtotag=true } },
+    { rule = { class = "jetbrains-idea-ce" },
+     properties = { tag = "2" , switchtotag=true } },
     { rule = { class = "Google-chrome" },
      properties = { tag = "1" , switchtotag=true } },
 
