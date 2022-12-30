@@ -15,11 +15,19 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
 local cyclefocus = require('awesome-cyclefocus')
+local dpi = require("beautiful.xresources").apply_dpi
 
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
+-- delayed placement hack
+-- placement, that should be applied after setting x/y/width/height/geometry
+function awful.rules.delayed_properties.delayed_placement(c, _, props) --luacheck: no unused
+    if props.delayed_placement then
+        awful.rules.extra_properties.placement(c, props.delayed_placement, props)
+    end
+end
 
 -- Load Debian menu entries
 local debian = require("debian.menu")
@@ -55,9 +63,20 @@ end
 beautiful.init(os.getenv("HOME") .. "/.config/awesome/custom_zenburn/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "x-terminal-emulator"
+terminal = "kitty"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
+
+function ex_menu(script) 
+    awful.spawn.single_instance(terminal .. " -e " .. os.getenv("HOME") .. "/.config/awesome/" .. script, {
+        floating = true,
+        width = dpi(680),
+        height = dpi(240) 
+    }, nil, nil, function(c) 
+        awful.placement.centered(c)
+    end
+    )
+end
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -69,10 +88,10 @@ modkey = "Mod4"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
     awful.layout.suit.tile,
-    awful.layout.suit.floating,
-    awful.layout.suit.tile.left,
     awful.layout.suit.tile.bottom,
     awful.layout.suit.tile.top,
+    awful.layout.suit.floating,
+    awful.layout.suit.tile.left,
     awful.layout.suit.fair,
     awful.layout.suit.fair.horizontal,
     awful.layout.suit.spiral,
@@ -250,6 +269,7 @@ root.buttons(gears.table.join(
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
+    awful.key({ modkey, "Shift" }, "p", function() ex_menu("power_menu.sh") end),
     awful.key({ "Mod1" }, "Tab", function(c)
         cyclefocus.cycle({modifier="Alt_L"})
     end),
@@ -328,9 +348,9 @@ globalkeys = gears.table.join(
               {description = "increase the number of columns", group = "layout"}),
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
               {description = "decrease the number of columns", group = "layout"}),
-    -- awful.key({ modkey,           }, "space", function () awful.layout.inc( 1)                end,
-    --           {description = "select next", group = "layout"}),
-    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(1)                end,
+    awful.key({ modkey, }, "s", function () awful.layout.inc( 1)                end,
+               {description = "select next", group = "layout"}),
+    awful.key({ modkey, "Shift"   }, "s", function () awful.layout.inc(-1)                end,
               {description = "next layout", group = "layout"}),
 
     awful.key({ modkey, "Control" }, "n",
