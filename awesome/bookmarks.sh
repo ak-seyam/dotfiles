@@ -12,8 +12,6 @@ res=$(echo -en $names | sed '1d' | fzf --reverse --prompt="type bookmark tag: ")
 
 if [[ ! -z $res ]]; then
     for site in $(echo ${bookmarks[$res]} | sed "s/<>/\n/g"); do
-        if [[ ! -z $site ]]; then
-            xdg-open $site&
-        fi
+       xdg-open $site
     done
 fi

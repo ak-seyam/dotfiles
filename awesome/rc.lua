@@ -71,7 +71,11 @@ function ex_menu(script)
     awful.spawn.single_instance(terminal .. " -e " .. os.getenv("HOME") .. "/.config/awesome/" .. script, {
         floating = true,
         width = dpi(680),
-        height = dpi(240) 
+        height = dpi(240),
+        modal = true,
+        sticky = true,
+        ontop = true,
+        focus = true
     }, nil, nil, function(c) 
         awful.placement.centered(c)
     end
@@ -270,7 +274,17 @@ root.buttons(gears.table.join(
 -- {{{ Key bindings
 globalkeys = gears.table.join(
     awful.key({ modkey, }, "f", function() awful.spawn.single_instance("gtk-launch org.gnome.Nautilus.desktop") end),
-    awful.key({ modkey, }, "b", function() ex_menu("bookmarks.sh") end),
+    awful.key({ modkey, }, "b", function() 
+        awful.spawn.easy_async("pgrep chrome", function(_, _, _, excode)
+            if excode == 1 then
+                awful.spawn.single_instance(
+                "google-chrome", {
+                    tag = 1, switchtotag = false
+                })
+            end
+            ex_menu("bookmarks.sh")
+        end)
+    end),
     awful.key({ modkey, "Shift" }, "p", function() ex_menu("power_menu.sh") end),
     awful.key({ "Mod1" }, "Tab", function(c)
         cyclefocus.cycle({modifier="Alt_L"})
