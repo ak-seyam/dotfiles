@@ -269,6 +269,8 @@ root.buttons(gears.table.join(
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
+    awful.key({ modkey, }, "f", function() awful.spawn.single_instance("gtk-launch org.gnome.Nautilus.desktop") end),
+    awful.key({ modkey, }, "b", function() ex_menu("bookmarks.sh") end),
     awful.key({ modkey, "Shift" }, "p", function() ex_menu("power_menu.sh") end),
     awful.key({ "Mod1" }, "Tab", function(c)
         cyclefocus.cycle({modifier="Alt_L"})
