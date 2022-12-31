@@ -62,25 +62,14 @@ end
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(os.getenv("HOME") .. "/.config/awesome/custom_zenburn/theme.lua")
 
+local dmenu = require("dmenu")
+local bookmarks = require("bookmarks")
+
 -- This is used later as the default terminal and editor to run.
 terminal = "kitty"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
-function ex_menu(script) 
-    awful.spawn.single_instance(terminal .. " -e " .. os.getenv("HOME") .. "/.config/awesome/" .. script, {
-        floating = true,
-        width = dpi(680),
-        height = dpi(240),
-        modal = true,
-        sticky = true,
-        ontop = true,
-        focus = true
-    }, nil, nil, function(c) 
-        awful.placement.centered(c)
-    end
-    )
-end
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -274,18 +263,14 @@ root.buttons(gears.table.join(
 -- {{{ Key bindings
 globalkeys = gears.table.join(
     awful.key({ modkey, }, "f", function() awful.spawn.single_instance("gtk-launch org.gnome.Nautilus.desktop") end),
-    awful.key({ modkey, }, "b", function() 
-        awful.spawn.easy_async("pgrep chrome", function(_, _, _, excode)
-            if excode == 1 then
-                awful.spawn.single_instance(
-                "google-chrome", {
-                    tag = 1, switchtotag = false
-                })
-            end
-            ex_menu("bookmarks.sh")
-        end)
+    awful.key({ modkey, }, "b", function() bookmarks("google-chrome") end),
+    awful.key({ modkey, "Shift" }, "p", function() 
+        dmenu({
+            poweroff = function() awful.spawn("poweroff") end,
+            reboot = function() awful.spawn("reboot") end,
+            logout = function() awful.spawn("loginctl terminate-user " .. os.getenv("USER")) end,
+        })
     end),
-    awful.key({ modkey, "Shift" }, "p", function() ex_menu("power_menu.sh") end),
     awful.key({ "Mod1" }, "Tab", function(c)
         cyclefocus.cycle({modifier="Alt_L"})
     end),
