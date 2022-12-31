@@ -14,7 +14,7 @@ return function(desc, prompt, lines)
     if line == nil then
         line = 10
     end
-    dmenu_cmd = "dmenu -sb \"" .. beautiful.bg_normal .. "\" -sf \"" .. beautiful.fg_normal .. "\" -nb \"" .. beautiful.bg_focus .. "\" -nf \"" .. beautiful.fg_focus .. "\"" .. " -l " .. line
+    dmenu_cmd = "dmenu -sb \"" .. beautiful.bg_normal .. "\" -sf \"" .. beautiful.fg_normal .. "\" -nb \"" .. beautiful.bg_focus .. "\" -nf \"" .. beautiful.fg_focus .. "\"" .. " -l " .. line .. " -fn '"  .. beautiful.font .. "'"
     if prompt ~= nil then
         dmenu_cmd = dmenu_cmd .. " -p " .. prompt
     end
