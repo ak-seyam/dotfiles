@@ -8,11 +8,12 @@ for line in $(sed '/^#/d' "$HOME/.bookmarks"); do
     names="$names\n${arrBookmarks[0]}"
 done
 
-res=$(echo -en $names | fzf)
+res=$(echo -en $names | sed '1d' | fzf --reverse --prompt="type bookmark tag: ")
 
-for site in $(echo ${bookmarks[$res]} | tr "[-*4]" "\n"); do
-    if [[ ! -z $site ]]; then
-        xdg-open $site&
-    fi
-done
-
+if [[ ! -z $res ]]; then
+    for site in $(echo ${bookmarks[$res]} | sed "s/<>/\n/g"); do
+        if [[ ! -z $site ]]; then
+            xdg-open $site&
+        fi
+    done
+fi
