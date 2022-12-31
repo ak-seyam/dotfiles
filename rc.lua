@@ -14,10 +14,20 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
+local cyclefocus = require('awesome-cyclefocus')
+local dpi = require("beautiful.xresources").apply_dpi
+
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 
+-- delayed placement hack
+-- placement, that should be applied after setting x/y/width/height/geometry
+function awful.rules.delayed_properties.delayed_placement(c, _, props) --luacheck: no unused
+    if props.delayed_placement then
+        awful.rules.extra_properties.placement(c, props.delayed_placement, props)
+    end
+end
 
 -- Load Debian menu entries
 local debian = require("debian.menu")
@@ -52,10 +62,27 @@ end
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(os.getenv("HOME") .. "/.config/awesome/custom_zenburn/theme.lua")
 
+local dmenu = require("dmenu")
+
 -- This is used later as the default terminal and editor to run.
-terminal = "x-terminal-emulator"
+terminal = "kitty"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
+
+function ex_menu(script) 
+    awful.spawn.single_instance(terminal .. " -e " .. os.getenv("HOME") .. "/.config/awesome/" .. script, {
+        floating = true,
+        width = dpi(680),
+        height = dpi(240),
+        modal = true,
+        sticky = true,
+        ontop = true,
+        focus = true
+    }, nil, nil, function(c) 
+        awful.placement.centered(c)
+    end
+    )
+end
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -67,10 +94,10 @@ modkey = "Mod4"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
     awful.layout.suit.tile,
-    awful.layout.suit.floating,
-    awful.layout.suit.tile.left,
     awful.layout.suit.tile.bottom,
     awful.layout.suit.tile.top,
+    awful.layout.suit.floating,
+    awful.layout.suit.tile.left,
     awful.layout.suit.fair,
     awful.layout.suit.fair.horizontal,
     awful.layout.suit.spiral,
@@ -248,7 +275,26 @@ root.buttons(gears.table.join(
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
+    awful.key({ modkey, }, "f", function() awful.spawn.single_instance("gtk-launch org.gnome.Nautilus.desktop") end),
+    awful.key({ modkey, }, "b", function() 
+        awful.spawn.easy_async("pgrep chrome", function(_, _, _, excode)
+            if excode == 1 then
+                awful.spawn.single_instance("google-chrome")
+            end
+            ex_menu("bookmarks.sh")
+        end)
+    end),
+    awful.key({ modkey, "Shift" }, "p", function() ex_menu("power_menu.sh") end),
+    awful.key({ "Mod1" }, "Tab", function(c)
+        cyclefocus.cycle({modifier="Alt_L"})
+    end),
+    -- modkey+Shift+Tab: backwards
+    awful.key({ "Mod1", "Shift" }, "Tab", function(c)
+        cyclefocus.cycle({modifier="Alt_L"})
+    end),
     awful.key({ modkey,           }, "w",  function() awful.util.spawn("google-chrome") end ,
+              {description="open google chrome", group="awesome"}),
+    awful.key({ modkey,           }, "i",  function() awful.util.spawn("gtk-launch jetbrains-idea-ce.desktop") end ,
               {description="open google chrome", group="awesome"}),
     awful.key({ }, "XF86AudioRaiseVolume",  function() awful.util.spawn("pamixer --allow-boost -i 10") end ,
               {description="increase volume", group="awesome"}),
@@ -297,15 +343,6 @@ globalkeys = gears.table.join(
               {description = "focus the previous screen", group = "screen"}),
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
               {description = "jump to urgent client", group = "client"}),
-    awful.key({ modkey,           }, "Tab",
-        function ()
-            awful.client.focus.history.previous()
-            if client.focus then
-                client.focus:raise()
-            end
-        end,
-        {description = "go back", group = "client"}),
-
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
@@ -326,10 +363,10 @@ globalkeys = gears.table.join(
               {description = "increase the number of columns", group = "layout"}),
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
               {description = "decrease the number of columns", group = "layout"}),
-    awful.key({ modkey,           }, "space", function () awful.layout.inc( 1)                end,
-              {description = "select next", group = "layout"}),
-    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
-              {description = "select previous", group = "layout"}),
+    awful.key({ modkey, }, "s", function () awful.layout.inc( 1)                end,
+               {description = "select next", group = "layout"}),
+    awful.key({ modkey, "Shift"   }, "s", function () awful.layout.inc(-1)                end,
+              {description = "next layout", group = "layout"}),
 
     awful.key({ modkey, "Control" }, "n",
               function ()
@@ -371,9 +408,9 @@ clientkeys = gears.table.join(
         {description = "toggle fullscreen", group = "client"}),
     awful.key({ modkey, "Shift"   }, "q",      function (c) c:kill()                         end,
               {description = "close", group = "client"}),
-    awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ,
+    awful.key({ modkey, "Shift" }, "[",  awful.client.floating.toggle                     ,
               {description = "toggle floating", group = "client"}),
-    awful.key({ modkey, "Shift" }, "u", function (c) c:swap(awful.client.getmaster()) end,
+    awful.key({ modkey,  }, "z", function (c) c:swap(awful.client.getmaster()) end,
               {description = "move to master", group = "client"}),
     awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end,
               {description = "move to screen", group = "client"}),
@@ -491,6 +528,12 @@ awful.rules.rules = {
     },
 
     -- workspace roles
+    { rule = { class = "DBeaver" },
+     properties = { tag = "3" , switchtotag=true } },
+    { rule = { class = "Zathura" },
+     properties = { tag = "4" , switchtotag=true } },
+    { rule = { class = "jetbrains-idea-ce" },
+     properties = { tag = "2" , switchtotag=true } },
     { rule = { class = "Google-chrome" },
      properties = { tag = "1" , switchtotag=true } },
 
