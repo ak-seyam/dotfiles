@@ -263,7 +263,7 @@ root.buttons(gears.table.join(
 -- {{{ Key bindings
 globalkeys = gears.table.join(
     awful.key({ modkey, }, "f", function() awful.spawn.single_instance("gtk-launch org.gnome.Nautilus.desktop") end),
-    awful.key({ modkey, }, "b", function() bookmarks("google-chrome") end),
+    awful.key({ modkey, "Shift" }, "b", function() bookmarks("google-chrome") end),
     awful.key({ modkey, "Shift" }, "p", function() 
         dmenu({
             poweroff = function() awful.spawn("poweroff") end,
@@ -315,10 +315,20 @@ globalkeys = gears.table.join(
         end,
         {description = "focus previous by index", group = "client"}
     ),
-   -- awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
-   --           {description = "show main menu", group = "awesome"}),
-
-    -- Layout manipulation
+    awful.key({ modkey, "Shift" }, "w", function() 
+        local bar = awful.screen.focused().mywibox
+        bar.visible = not bar.visible
+    end, {description = "toggle mywibox", group = "awesome"}),
+    awful.key({ modkey, "Shift" }, "v", function() 
+        local bar = awful.screen.focused().mywibox
+        if bar.visible then
+            bar.visible = false
+            awful.spawn.single_instance("xwinwrap -fs -fdt -ni -b -nf -un -o 1.0 -debug -- mpv -wid WID --loop --no-audio  av://v4l2:/dev/video0 --profile=low-latency --untimed")
+        else
+            awful.spawn("pkill xwinwrap")
+            bar.visible = true
+        end
+    end, {description = "toggle mywibox", group = "awesome"}),
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,
               {description = "swap with next client by index", group = "client"}),
     awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end,
@@ -497,6 +507,7 @@ clientbuttons = gears.table.join(
 root.keys(globalkeys)
 -- }}}
 
+
 -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
@@ -522,6 +533,10 @@ awful.rules.rules = {
      properties = { tag = "2" , switchtotag=true } },
     { rule = { class = "Google-chrome" },
      properties = { tag = "1" , switchtotag=true } },
+    { rule = { class = "Code" },
+     properties = { tag = "5" , switchtotag=true } },
+    { rule = { class = "X_WINWRAP" },
+     properties = { border_width = 0 } },
 
     -- Floating clients.
     { rule_any = {
