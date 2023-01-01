@@ -328,7 +328,7 @@ globalkeys = gears.table.join(
                 action_table[line] = function() 
                     bar.visible = false
                     selected_video_source = "/dev/" .. line
-                    awful.spawn.single_instance("xwinwrap -fs -fdt -ni -b -nf -un -o 1.0 -debug -- mpv -wid WID --loop --no-audio  av://v4l2:".. selected_video_source .. " --profile=low-latency --untimed")
+                    awful.spawn.single_instance("xwinwrap -fs -fdt -ni -b -nf -un -o 1.0 -debug -- mpv -wid WID -vf \"hflip\" av://v4l2:".. selected_video_source .. " --profile=low-latency --untimed ")
                 end
             end
             dmenu(action_table, "select video source")
