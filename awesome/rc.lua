@@ -263,7 +263,7 @@ root.buttons(gears.table.join(
 -- {{{ Key bindings
 globalkeys = gears.table.join(
     awful.key({ modkey, }, "f", function() awful.spawn.single_instance("gtk-launch org.gnome.Nautilus.desktop") end),
-    awful.key({ modkey, "Shift" }, "b", function() bookmarks("google-chrome") end),
+    awful.key({ modkey, "Shift" }, "b", function() bookmarks("x-www-browser") end),
     awful.key({ modkey, "Shift" }, "p", function() 
         dmenu({
             poweroff = function() awful.spawn("poweroff") end,
@@ -278,18 +278,18 @@ globalkeys = gears.table.join(
     awful.key({ "Mod1", "Shift" }, "Tab", function(c)
         cyclefocus.cycle({modifier="Alt_L"})
     end),
-    awful.key({ modkey,           }, "w",  function() awful.util.spawn("google-chrome") end ,
-              {description="open google chrome", group="awesome"}),
+    awful.key({ modkey,           }, "w",  function() awful.util.spawn("x-www-browser") end ,
+              {description="open browser", group="applications"}),
     awful.key({ modkey,           }, "i",  function() awful.util.spawn("gtk-launch jetbrains-idea-ce.desktop") end ,
-              {description="open google chrome", group="awesome"}),
+              {description="open idea", group="applications"}),
     awful.key({ }, "XF86AudioRaiseVolume",  function() awful.util.spawn("pamixer --allow-boost -i 10") end ,
-              {description="increase volume", group="awesome"}),
+              {description="increase volume", group="applications"}),
     awful.key({ }, "XF86AudioLowerVolume",  function() awful.util.spawn("pamixer -d 10") end ,
-              {description="decrease volume", group="awesome"}),
+              {description="decrease volume", group="applications"}),
     awful.key({ }, "XF86AudioMute",  function() awful.util.spawn("pamixer -t") end ,
-              {description="toggle mute", group="awesome"}),
+              {description="toggle mute", group="system"}),
     awful.key({ }, "XF86AudioPause",  function() awful.util.spawn("playerctl play-pause") end ,
-              {description="play-pause", group="awesome"}),
+              {description="play-pause", group="system"}),
     awful.key({  }, "XF86MonBrightnessUp",  function() awful.util.spawn("brightnessctl set 15+") end ,
               {description="brightness up", group="awesome"}),
     awful.key({  }, "XF86MonBrightnessDown",  function() awful.util.spawn("brightnessctl set 15-") end ,
