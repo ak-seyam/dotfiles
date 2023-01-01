@@ -14,9 +14,9 @@ return function(desc, prompt, lines)
     if line == nil then
         line = 10
     end
-    dmenu_cmd = "dmenu -sb \"" .. beautiful.bg_normal .. "\" -sf \"" .. beautiful.fg_normal .. "\" -nb \"" .. beautiful.bg_focus .. "\" -nf \"" .. beautiful.fg_focus .. "\"" .. " -l " .. line .. " -fn '"  .. beautiful.font .. "'"
+    dmenu_cmd = "dmenu -nb \"" .. beautiful.bg_normal .. "\" -nf \"" .. beautiful.fg_normal .. "\" -sb \"" .. beautiful.bg_focus .. "\" -sf \"" .. beautiful.fg_focus .. "\"" .. " -l " .. line .. " -fn '"  .. beautiful.font .. "'"
     if prompt ~= nil then
-        dmenu_cmd = dmenu_cmd .. " -p " .. prompt
+        dmenu_cmd = dmenu_cmd .. " -p \"" .. prompt .. "\""
     end
     cmd = "echo -e " .. n .. " | " .. dmenu_cmd
     awful.spawn.easy_async_with_shell(cmd, function(stdout)

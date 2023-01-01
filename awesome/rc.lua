@@ -322,10 +322,20 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift" }, "v", function() 
         local bar = awful.screen.focused().mywibox
         if bar.visible then
-            bar.visible = false
-            awful.spawn.single_instance("xwinwrap -fs -fdt -ni -b -nf -un -o 1.0 -debug -- mpv -wid WID --loop --no-audio  av://v4l2:/dev/video0 --profile=low-latency --untimed")
+            local action_table = {}
+            awful.spawn.easy_async_with_shell("ls /dev | grep video", function(stdout)
+            for line in stdout:gmatch("([^\n]*)\n?") do
+                action_table[line] = function() 
+                    bar.visible = false
+                    selected_video_source = "/dev/" .. line
+                    awful.spawn.single_instance("xwinwrap -fs -fdt -ni -b -nf -un -o 1.0 -debug -- mpv -wid WID --loop --no-audio  av://v4l2:".. selected_video_source .. " --profile=low-latency --untimed")
+                end
+            end
+            dmenu(action_table, "select video source")
+            end)
         else
             awful.spawn("pkill xwinwrap")
+            awful.spawn("pkill mpv")
             bar.visible = true
         end
     end, {description = "toggle mywibox", group = "awesome"}),
