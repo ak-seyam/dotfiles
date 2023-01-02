@@ -5,7 +5,7 @@ end
 
 # my functions
 function fzf_search
-    set s_cmd $(ls /usr/bin/ /usr/local/bin/ /bin /usr/share/applications | sed '/^\//d' | sed '/^[[:space:]]*$/d' | fzf --reverse --height=10)
+    set s_cmd $(ls /usr/bin/ /usr/local/bin/ /bin /usr/share/applications | sed '/^\//d' | sed '/^[[:space:]]*$/d' | sort -u | fzf --reverse --height=10)
     if string match -e '.desktop' $s_cmd
         commandline --replace "gtk-launch $s_cmd"
     else if not test -z $s_cmd 
