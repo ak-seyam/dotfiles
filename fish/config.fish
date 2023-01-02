@@ -1,10 +1,9 @@
+set fish_greeting
+abbr --add si "sudo apt install"
+abbr --add srm "sudo apt remove --purge"
+abbr --add sup "sudo apt update && sudo apt upgrade"
+abbr --add sx "startx"
+abbr --add p "python"
 if status is-interactive
     # Commands to run in interactive sessions can go here
 end
-set fish_greeting
-# aliases
-alias ga="git add -A"
-alias gc="git commit"
-alias gp="git push"
-alias si="sudo dnf install"
-alias sup="sudo dnf update"
