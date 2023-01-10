@@ -66,7 +66,7 @@ local dmenu = require("dmenu")
 local bookmarks = require("bookmarks")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "kitty"
+terminal = "xfce4-terminal"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -127,10 +127,6 @@ else
     })
 end
 
-
-mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
-                                     menu = mymainmenu })
-
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
@@ -183,15 +179,7 @@ local tasklist_buttons = gears.table.join(
                                           end))
 
 local function set_wallpaper(s)
-    -- Wallpaper
-    if beautiful.wallpaper then
-        local wallpaper = beautiful.wallpaper
-        -- If wallpaper is a function, call it with the screen
-        if type(wallpaper) == "function" then
-            wallpaper = wallpaper(s)
-        end
-        gears.wallpaper.maximized(wallpaper, s, true)
-    end
+    gears.wallpaper.set(beautiful.wallpaper_color)
 end
 
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
@@ -236,7 +224,6 @@ awful.screen.connect_for_each_screen(function(s)
         layout = wibox.layout.align.horizontal,
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
-            mylauncher,
             s.mytaglist,
             s.mypromptbox,
         },
@@ -263,7 +250,7 @@ root.buttons(gears.table.join(
 -- {{{ Key bindings
 globalkeys = gears.table.join(
     awful.key({ modkey, }, "f", function() awful.spawn.single_instance("gtk-launch org.gnome.Nautilus.desktop") end),
-    awful.key({ modkey, "Shift" }, "b", function() bookmarks("x-www-browser") end),
+    awful.key({ modkey, "Shift" }, "b", function() bookmarks("google-chrome") end),
     awful.key({ modkey, "Shift" }, "p", function() 
         dmenu({
             poweroff = function() awful.spawn("poweroff") end,
@@ -278,7 +265,7 @@ globalkeys = gears.table.join(
     awful.key({ "Mod1", "Shift" }, "Tab", function(c)
         cyclefocus.cycle({modifier="Alt_L"})
     end),
-    awful.key({ modkey,           }, "w",  function() awful.util.spawn("x-www-browser") end ,
+    awful.key({ modkey,           }, "w",  function() awful.util.spawn("google-chrome") end ,
               {description="open browser", group="applications"}),
     awful.key({ modkey,           }, "i",  function() awful.util.spawn("gtk-launch jetbrains-idea-ce.desktop") end ,
               {description="open idea", group="applications"}),
@@ -328,7 +315,7 @@ globalkeys = gears.table.join(
                 action_table[line] = function() 
                     bar.visible = false
                     selected_video_source = "/dev/" .. line
-                    awful.spawn.single_instance("xwinwrap -fs -fdt -ni -b -nf -un -o 1.0 -debug -- mpv -wid WID -vf \"hflip\" av://v4l2:".. selected_video_source .. " --profile=low-latency --untimed ")
+                    awful.spawn.easy_async("xwinwrap -fs -fdt -ni -b -nf -un -o 1.0 -debug -- mpv -wid WID -vf \"hflip\" av://v4l2:".. selected_video_source .. " --profile=low-latency --untimed --panscan=1.0")
                 end
             end
             dmenu(action_table, "select video source")
@@ -401,8 +388,10 @@ globalkeys = gears.table.join(
               end,
               {description = "lua execute prompt", group = "awesome"}),
     -- Menubar
-    awful.key({ modkey }, "p", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"})
+    awful.key({ modkey }, "d", function() menubar.show() end,
+              {description = "show the menubar", group = "launcher"}),
+    awful.key({ modkey, "Shift" }, "d", function() menubar.refresh() end,
+              {description = "refresh the menubar", group = "launcher"})
 )
 
 clientkeys = gears.table.join(
@@ -525,6 +514,7 @@ awful.rules.rules = {
     { rule = { },
       properties = { border_width = beautiful.border_width,
                      border_color = beautiful.border_normal,
+                     size_hints_honor = false,
                      focus = awful.client.focus.filter,
                      raise = true,
                      keys = clientkeys,

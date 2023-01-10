@@ -8,13 +8,13 @@ local dpi = require("beautiful.xresources").apply_dpi
 
 -- {{{ Main
 local theme = {}
-theme.wallpaper = themes_path .. "zenburn/zenburn-background.png"
 -- }}}
 
 -- {{{ Styles
 theme.font      = "sans 8"
 
 -- {{{ Colors
+theme.wallpaper_color = "#1d2021"
 theme.fg_normal  = "#DCDCCC"
 theme.fg_focus   = "#F0DFAF"
 theme.fg_urgent  = "#CC9393"
@@ -25,9 +25,9 @@ theme.bg_systray = theme.bg_normal
 -- }}}
 
 -- {{{ Borders
-theme.useless_gap   = dpi(5)
-theme.border_width  = dpi(4)
-theme.border_normal = "#3F3F3F"
+theme.useless_gap   = dpi(0)
+theme.border_width  = dpi(2)
+theme.border_normal = theme.wallpaper_color
 theme.border_focus  = "#6F6F6F"
 theme.border_marked = "#CC9393"
 -- }}}
