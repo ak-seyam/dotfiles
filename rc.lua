@@ -63,26 +63,13 @@ end
 beautiful.init(os.getenv("HOME") .. "/.config/awesome/custom_zenburn/theme.lua")
 
 local dmenu = require("dmenu")
+local bookmarks = require("bookmarks")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "kitty"
+terminal = "xfce4-terminal"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
-function ex_menu(script) 
-    awful.spawn.single_instance(terminal .. " -e " .. os.getenv("HOME") .. "/.config/awesome/" .. script, {
-        floating = true,
-        width = dpi(680),
-        height = dpi(240),
-        modal = true,
-        sticky = true,
-        ontop = true,
-        focus = true
-    }, nil, nil, function(c) 
-        awful.placement.centered(c)
-    end
-    )
-end
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -140,10 +127,6 @@ else
     })
 end
 
-
-mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
-                                     menu = mymainmenu })
-
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
@@ -196,15 +179,7 @@ local tasklist_buttons = gears.table.join(
                                           end))
 
 local function set_wallpaper(s)
-    -- Wallpaper
-    if beautiful.wallpaper then
-        local wallpaper = beautiful.wallpaper
-        -- If wallpaper is a function, call it with the screen
-        if type(wallpaper) == "function" then
-            wallpaper = wallpaper(s)
-        end
-        gears.wallpaper.maximized(wallpaper, s, true)
-    end
+    gears.wallpaper.set(beautiful.wallpaper_color)
 end
 
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
@@ -241,6 +216,12 @@ awful.screen.connect_for_each_screen(function(s)
         buttons = tasklist_buttons
     }
 
+    -- Create a do not disturb mode
+    s.donotdisturb = wibox.widget {
+        text = "🔔", -- this for mute 🔕
+        widget = wibox.widget.textbox
+    }
+
     -- Create the wibox
     s.mywibox = awful.wibar({ position = "top", screen = s })
 
@@ -249,13 +230,13 @@ awful.screen.connect_for_each_screen(function(s)
         layout = wibox.layout.align.horizontal,
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
-            mylauncher,
             s.mytaglist,
             s.mypromptbox,
         },
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
+            s.donotdisturb,
             mykeyboardlayout,
             wibox.widget.systray(),
             mytextclock,
@@ -276,15 +257,14 @@ root.buttons(gears.table.join(
 -- {{{ Key bindings
 globalkeys = gears.table.join(
     awful.key({ modkey, }, "f", function() awful.spawn.single_instance("gtk-launch org.gnome.Nautilus.desktop") end),
-    awful.key({ modkey, }, "b", function() 
-        awful.spawn.easy_async("pgrep chrome", function(_, _, _, excode)
-            if excode == 1 then
-                awful.spawn.single_instance("google-chrome")
-            end
-            ex_menu("bookmarks.sh")
-        end)
+    awful.key({ modkey, "Shift" }, "b", function() bookmarks("google-chrome") end),
+    awful.key({ modkey, "Shift" }, "p", function() 
+        dmenu({
+            poweroff = function() awful.spawn("poweroff") end,
+            reboot = function() awful.spawn("reboot") end,
+            logout = function() awful.spawn("loginctl terminate-user " .. os.getenv("USER")) end,
+        })
     end),
-    awful.key({ modkey, "Shift" }, "p", function() ex_menu("power_menu.sh") end),
     awful.key({ "Mod1" }, "Tab", function(c)
         cyclefocus.cycle({modifier="Alt_L"})
     end),
@@ -293,17 +273,17 @@ globalkeys = gears.table.join(
         cyclefocus.cycle({modifier="Alt_L"})
     end),
     awful.key({ modkey,           }, "w",  function() awful.util.spawn("google-chrome") end ,
-              {description="open google chrome", group="awesome"}),
+              {description="open browser", group="applications"}),
     awful.key({ modkey,           }, "i",  function() awful.util.spawn("gtk-launch jetbrains-idea-ce.desktop") end ,
-              {description="open google chrome", group="awesome"}),
+              {description="open idea", group="applications"}),
     awful.key({ }, "XF86AudioRaiseVolume",  function() awful.util.spawn("pamixer --allow-boost -i 10") end ,
-              {description="increase volume", group="awesome"}),
+              {description="increase volume", group="applications"}),
     awful.key({ }, "XF86AudioLowerVolume",  function() awful.util.spawn("pamixer -d 10") end ,
-              {description="decrease volume", group="awesome"}),
+              {description="decrease volume", group="applications"}),
     awful.key({ }, "XF86AudioMute",  function() awful.util.spawn("pamixer -t") end ,
-              {description="toggle mute", group="awesome"}),
+              {description="toggle mute", group="system"}),
     awful.key({ }, "XF86AudioPause",  function() awful.util.spawn("playerctl play-pause") end ,
-              {description="play-pause", group="awesome"}),
+              {description="play-pause", group="system"}),
     awful.key({  }, "XF86MonBrightnessUp",  function() awful.util.spawn("brightnessctl set 15+") end ,
               {description="brightness up", group="awesome"}),
     awful.key({  }, "XF86MonBrightnessDown",  function() awful.util.spawn("brightnessctl set 15-") end ,
@@ -329,10 +309,30 @@ globalkeys = gears.table.join(
         end,
         {description = "focus previous by index", group = "client"}
     ),
-   -- awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
-   --           {description = "show main menu", group = "awesome"}),
-
-    -- Layout manipulation
+    awful.key({ modkey, "Shift" }, "w", function() 
+        local bar = awful.screen.focused().mywibox
+        bar.visible = not bar.visible
+    end, {description = "toggle mywibox", group = "awesome"}),
+    awful.key({ modkey, "Shift" }, "v", function() 
+        local bar = awful.screen.focused().mywibox
+        if bar.visible then
+            local action_table = {}
+            awful.spawn.easy_async_with_shell("ls /dev | grep video", function(stdout)
+            for line in stdout:gmatch("([^\n]*)\n?") do
+                action_table[line] = function() 
+                    bar.visible = false
+                    selected_video_source = "/dev/" .. line
+                    awful.spawn.easy_async("xwinwrap -fs -fdt -ni -b -nf -un -o 1.0 -debug -- mpv -wid WID -vf \"hflip\" av://v4l2:".. selected_video_source .. " --profile=low-latency --untimed --panscan=1.0")
+                end
+            end
+            dmenu(action_table, "select video source")
+            end)
+        else
+            awful.spawn("pkill xwinwrap")
+            awful.spawn("pkill mpv")
+            bar.visible = true
+        end
+    end, {description = "toggle mywibox", group = "awesome"}),
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,
               {description = "swap with next client by index", group = "client"}),
     awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end,
@@ -348,7 +348,7 @@ globalkeys = gears.table.join(
               {description = "open a terminal", group = "launcher"}),
     awful.key({ modkey, "Control" }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
-    awful.key({ modkey, "Shift"   }, "`", awesome.quit,
+    awful.key({ modkey, "Shift"   }, "`", function() awful.spawn.with_shell("loginctl terminate-user $USER") end,
               {description = "quit awesome", group = "awesome"}),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)          end,
@@ -395,8 +395,21 @@ globalkeys = gears.table.join(
               end,
               {description = "lua execute prompt", group = "awesome"}),
     -- Menubar
-    awful.key({ modkey }, "p", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"})
+    awful.key({ modkey, "Shift" }, "n", function()
+        naughty.toggle()
+		awful.screen.connect_for_each_screen(function(s)
+            if s.donotdisturb.text == "🔕" then
+                s.donotdisturb.text = "🔔"
+            else
+                s.donotdisturb.text = "🔕"
+            end
+		end)
+    end,
+              {description = "show the menubar", group = "launcher"}),
+    awful.key({ modkey }, "d", function() menubar.show() end,
+              {description = "show the menubar", group = "launcher"}),
+    awful.key({ modkey, "Shift" }, "d", function() menubar.refresh() end,
+              {description = "refresh the menubar", group = "launcher"})
 )
 
 clientkeys = gears.table.join(
@@ -511,6 +524,7 @@ clientbuttons = gears.table.join(
 root.keys(globalkeys)
 -- }}}
 
+
 -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
@@ -518,6 +532,7 @@ awful.rules.rules = {
     { rule = { },
       properties = { border_width = beautiful.border_width,
                      border_color = beautiful.border_normal,
+                     size_hints_honor = false,
                      focus = awful.client.focus.filter,
                      raise = true,
                      keys = clientkeys,
@@ -536,6 +551,10 @@ awful.rules.rules = {
      properties = { tag = "2" , switchtotag=true } },
     { rule = { class = "Google-chrome" },
      properties = { tag = "1" , switchtotag=true } },
+    { rule = { class = "Code" },
+     properties = { tag = "5" , switchtotag=true } },
+    { rule = { class = "X_WINWRAP" },
+     properties = { border_width = 0 } },
 
     -- Floating clients.
     { rule_any = {
