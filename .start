@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -e
+t_name="/tmp/start_script"
+if [[ ! -f $t_name ]]; then
+	nm-applet&
+	eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg)
+	export SSH_AUTH_SOCK
+/usr/libexec/polkit-gnome-authentication-agent-1&
+	export LS_COLORS="ow=34;21"
+	setxkbmap -layout us,ar -option grp:win_space_toggle
+	export PATH="$PATH:/usr/sbin"
+	numlockx&
+	udiskie -t&
+	picom --vsync --backend glx&
+	touch $t_name
+fi
