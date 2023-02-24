@@ -140,6 +140,7 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock()
 
+
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
                     awful.button({ }, 1, function(t) t:view_only() end),
@@ -194,6 +195,10 @@ awful.screen.connect_for_each_screen(function(s)
     -- Each screen has its own tag table.
     awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
 
+    s.mymastercount = wibox.widget {
+        markup = "[mc=" .. s.selected_tag.master_count .. "]",
+        widget = wibox.widget.textbox
+    }
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
     -- Create an imagebox widget which will contain an icon indicating which layout we're using.
@@ -235,6 +240,7 @@ awful.screen.connect_for_each_screen(function(s)
             mykeyboardlayout,
             wibox.widget.systray(),
             mytextclock,
+            s.mymastercount,
             s.mylayoutbox,
         },
     }
@@ -251,6 +257,8 @@ root.buttons(gears.table.join(
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
+    awful.key({ modkey, "Mod1" }, "v", treetile.vertical),
+    awful.key({ modkey, "Mod1" }, "h", treetile.horizontal),
     awful.key({ modkey, }, "f", function() awful.spawn.single_instance("gtk-launch org.gnome.Nautilus.desktop") end),
     awful.key({ modkey, "Shift" }, "b", function() bookmarks("google-chrome") end),
     awful.key({ modkey, "Shift" }, "p", function() 
@@ -350,9 +358,17 @@ globalkeys = gears.table.join(
               {description = "increase master width factor", group = "layout"}),
     awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)          end,
               {description = "decrease master width factor", group = "layout"}),
-    awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1, nil, true) end,
+    awful.key({ modkey, "Shift"   }, "h",     function () 
+        awful.tag.incnmaster( 1, nil, true)
+        s = awful.screen.focused()
+        s.mymastercount.text = "[mc=" .. s.selected_tag.master_count .. "]"
+    end,
               {description = "increase the number of master clients", group = "layout"}),
-    awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1, nil, true) end,
+    awful.key({ modkey, "Shift"   }, "l",     function () 
+        awful.tag.incnmaster(-1, nil, true) 
+        s = awful.screen.focused()
+        s.mymastercount.text = "[mc=" .. s.selected_tag.master_count .. "]"
+    end,
               {description = "decrease the number of master clients", group = "layout"}),
     awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1, nil, true)    end,
               {description = "increase the number of columns", group = "layout"}),
