@@ -677,4 +677,4 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- }}}
 
 -- start script
-awful.spawn.easy_async(os.getenv("HOME") .. "/.start")
+awful.spawn.once(os.getenv("HOME") .. "/.start")
