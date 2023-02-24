@@ -388,10 +388,24 @@ globalkeys = gears.table.join(
               end,
               {description = "lua execute prompt", group = "awesome"}),
     -- Menubar
-    awful.key({ modkey }, "d", function() menubar.show() end,
-              {description = "show the menubar", group = "launcher"}),
-    awful.key({ modkey, "Shift" }, "d", function() menubar.refresh() end,
-              {description = "refresh the menubar", group = "launcher"})
+    -- awful.key({ modkey }, "d", function() menubar.show() end,
+    --           {description = "show the menubar", group = "launcher"}),
+    -- awful.key({ modkey, "Shift" }, "d", function() menubar.refresh() end,
+    --           {description = "refresh the menubar", group = "launcher"})
+    awful.key({ modkey }, "d", function() 
+        awful.spawn.easy_async_with_shell("ls /usr/bin/ /usr/local/bin/ /bin /usr/share/applications | sed '/^\\//d' | sed '/^[[:space:]]*$/d' | awk '!a[$0]++'", function(stdout)
+            dmenu( nil, "run> ", nil, stdout,
+            function(res) 
+                desk = ".desktop\n"
+                if res:sub(-#desk) == desk then
+                    awful.spawn("gtk-launch " .. res:gsub("\n",""))
+                else
+                    awful.spawn(res)
+                end
+            end) 
+        end)
+    end,
+    {description = "show the menubar", group = "launcher"})
 )
 
 clientkeys = gears.table.join(
@@ -643,3 +657,6 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
+
+-- start script
+awful.spawn.easy_async(os.getenv("HOME") .. "/.start")
