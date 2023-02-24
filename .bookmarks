@@ -1,8 +1,2 @@
-# bookmarks are in form of name=website
-# for multiple websites split each site with a space example name=webiste1 website2
-google=https://www.google.com/
-github=https://github.com/
-work/jira=https://www.google.com/
-comp/mode=https://leetcode.com/ https://neetcode.io/
-comp/leetcode=https://leetcode.com/
-comp/leetcode/neetcode=https://neetcode.io/
+# sites bookmarks example
+comp=https://neetcode.io/practice https://leetcode.com/ code

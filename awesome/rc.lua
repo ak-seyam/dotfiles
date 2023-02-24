@@ -46,7 +46,8 @@ startup.cmds = {
     "numlockx",
     "udiskie -t",
     "picom --vsync --backend glx",
-    "export EDITOR=vim"
+    "export EDITOR=\"vim\"",
+    "export EXAMPLE=\"example\""
 }
 
 -- {{{ Error handling
