@@ -17,6 +17,7 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 local cyclefocus = require('awesome-cyclefocus')
 local dpi = require("beautiful.xresources").apply_dpi
 local treetile = require("treetile")
+local startup = require("startup")
 
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
@@ -33,6 +34,20 @@ end
 -- Load Debian menu entries
 local debian = require("debian.menu")
 local has_fdo, freedesktop = pcall(require, "freedesktop")
+
+-- Set startup applications
+startup.cmds = {
+    "nm-applet",
+    "eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg)",
+    "export SSH_AUTH_SOCK",
+    "/usr/libexec/polkit-gnome-authentication-agent-1&",
+    "export LS_COLORS=\"ow=34;21\"",
+    "setxkbmap -layout us,ar -option grp:win_space_toggle",
+    "numlockx",
+    "udiskie -t",
+    "picom --vsync --backend glx",
+    "export EDITOR=vim"
+}
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -265,7 +280,11 @@ globalkeys = gears.table.join(
         dmenu({
             poweroff = function() awful.spawn("systemctl poweroff") end,
             reboot = function() awful.spawn("systemctl reboot") end,
-            logout = function() awful.spawn("loginctl terminate-user " .. os.getenv("USER")) end,
+            logout = function() 
+                startup.distroy_tmp_file()
+                -- awful.spawn("loginctl terminate-user " .. os.getenv("USER")) 
+                awesome.quit()
+            end,
         })
     end),
     awful.key({ "Mod1" }, "Tab", function(c)
@@ -351,7 +370,11 @@ globalkeys = gears.table.join(
               {description = "open a terminal", group = "launcher"}),
     awful.key({ modkey, "Control" }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
-    awful.key({ modkey, "Shift"   }, "`", function() awful.spawn.with_shell("loginctl terminate-user $USER") end,
+    awful.key({ modkey, "Shift"   }, "`", function() 
+        startup.distroy_tmp_file()
+        awesome.quit()
+        -- awful.spawn.with_shell("loginctl terminate-user $USER") 
+    end,
               {description = "quit awesome", group = "awesome"}),
 
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)          end,
@@ -677,4 +700,6 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- }}}
 
 -- start script
-awful.spawn.once(os.getenv("HOME") .. "/.start")
+-- awful.spawn.once(os.getenv("HOME") .. "/.start")
+startup.start()
+
