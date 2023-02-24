@@ -263,8 +263,8 @@ globalkeys = gears.table.join(
     awful.key({ modkey, "Shift" }, "b", function() bookmarks("google-chrome") end),
     awful.key({ modkey, "Shift" }, "p", function() 
         dmenu({
-            poweroff = function() awful.spawn("poweroff") end,
-            reboot = function() awful.spawn("reboot") end,
+            poweroff = function() awful.spawn("systemctl poweroff") end,
+            reboot = function() awful.spawn("systemctl reboot") end,
             logout = function() awful.spawn("loginctl terminate-user " .. os.getenv("USER")) end,
         })
     end),
