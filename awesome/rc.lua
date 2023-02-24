@@ -393,7 +393,7 @@ globalkeys = gears.table.join(
     -- awful.key({ modkey, "Shift" }, "d", function() menubar.refresh() end,
     --           {description = "refresh the menubar", group = "launcher"})
     awful.key({ modkey }, "d", function() 
-        awful.spawn.easy_async_with_shell("ls /usr/bin/ /usr/local/bin/ /bin /usr/share/applications | sed '/^\\//d' | sed '/^[[:space:]]*$/d' | awk '!a[$0]++'", function(stdout)
+        awful.spawn.easy_async_with_shell("ls /usr/bin/ /usr/local/bin/ /bin /usr/share/applications " .. os.getenv("HOME") .. "/.local/share/applications " .. " | sed '/^\\//d' | sed '/^[[:space:]]*$/d' | awk '!a[$0]++'", function(stdout)
             dmenu( nil, "run> ", nil, stdout,
             function(res) 
                 desk = ".desktop\n"
