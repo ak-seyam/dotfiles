@@ -2,7 +2,10 @@ local dmenu = require("dmenu")
 local awful = require("awful")
 local gears = require("gears")
 
-return function(browser)
+return function(browser, sep)
+    if sep == nil or sep == "" then
+        sep = "|||"
+    end
     awful.spawn.easy_async(
     'sed "/^#/d" ' .. os.getenv("HOME") .. "/.bookmarks",
     function(stdout)
@@ -18,7 +21,7 @@ return function(browser)
                 end
             end
             bookmarksTable[key] = function()
-                for url in string.gmatch(value, "%S+") do
+                for url in string.gmatch(value, "([^"..sep.."]+)") do
                     local cmd = url
                     if gears.string.startswith(url, "http") or gears.string.startswith(url, "https") then
                         cmd = browser .. " " .. url
