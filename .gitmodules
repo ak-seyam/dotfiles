@@ -1,3 +1,6 @@
 [submodule "awesome/awesome-cyclefocus"]
 	path = awesome/awesome-cyclefocus
 	url = https://github.com/blueyed/awesome-cyclefocus.git
+[submodule "awesome/treetile"]
+	path = awesome/treetile
+	url = https://github.com/guotsuan/awesome-treetile
