@@ -40,14 +40,16 @@ startup.cmds = {
     "nm-applet",
     "eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets,ssh,gpg)",
     "export SSH_AUTH_SOCK",
-    "/usr/libexec/polkit-gnome-authentication-agent-1&",
+    "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1",
     "export LS_COLORS=\"ow=34;21\"",
     "setxkbmap -layout us,ar -option grp:win_space_toggle",
     "numlockx",
     "udiskie -t",
     "picom --vsync --backend glx",
     "export EDITOR=\"vim\"",
-    "export EXAMPLE=\"example\""
+    "export EXAMPLE=\"example\"",
+    os.getenv("HOME") .. '/screen_setup.sh',
+    "cbatticon",
 }
 
 -- {{{ Error handling
@@ -77,13 +79,14 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(os.getenv("HOME") .. "/.config/awesome/custom_zenburn/theme.lua")
+-- beautiful.init(os.getenv("HOME") .. "/.config/awesome/custom_zenburn/theme.lua")
+beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 
 local dmenu = require("dmenu")
 local bookmarks = require("bookmarks")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "kitty"
+terminal = "xfce4-terminal"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -198,7 +201,15 @@ local tasklist_buttons = gears.table.join(
                                           end))
 
 local function set_wallpaper(s)
-    gears.wallpaper.set(beautiful.wallpaper_color)
+    -- Wallpaper
+    if beautiful.wallpaper then
+        local wallpaper = beautiful.wallpaper
+        -- If wallpaper is a function, call it with the screen
+        if type(wallpaper) == "function" then
+            wallpaper = wallpaper(s)
+        end
+        gears.wallpaper.maximized(wallpaper, s, true)
+    end
 end
 
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
@@ -430,24 +441,24 @@ globalkeys = gears.table.join(
               end,
               {description = "lua execute prompt", group = "awesome"}),
     -- Menubar
-    -- awful.key({ modkey }, "d", function() menubar.show() end,
-    --           {description = "show the menubar", group = "launcher"}),
-    -- awful.key({ modkey, "Shift" }, "d", function() menubar.refresh() end,
-    --           {description = "refresh the menubar", group = "launcher"})
-    awful.key({ modkey }, "d", function() 
-        awful.spawn.easy_async_with_shell("ls /usr/bin/ /usr/local/bin/ /bin /usr/share/applications " .. os.getenv("HOME") .. "/.local/share/applications " .. " | sed '/^\\//d' | sed '/^[[:space:]]*$/d' | awk '!a[$0]++'", function(stdout)
-            dmenu( nil, "run> ", nil, stdout,
-            function(res) 
-                desk = ".desktop\n"
-                if res:sub(-#desk) == desk then
-                    awful.spawn("gtk-launch " .. res:gsub("\n",""))
-                else
-                    awful.spawn(res)
-                end
-            end) 
-        end)
-    end,
-    {description = "show the menubar", group = "launcher"})
+    awful.key({ modkey }, "d", function() menubar.show() end,
+              {description = "show the menubar", group = "launcher"}),
+    awful.key({ modkey, "Shift" }, "d", function() menubar.refresh() end,
+              {description = "refresh the menubar", group = "launcher"})
+    -- awful.key({ modkey }, "d", function() 
+    --     awful.spawn.easy_async_with_shell("ls /usr/bin/ /usr/local/bin/ /bin /usr/share/applications " .. os.getenv("HOME") .. "/.local/share/applications " .. " | sed '/^\\//d' | sed '/^[[:space:]]*$/d' | awk '!a[$0]++'", function(stdout)
+    --         dmenu( nil, "run> ", nil, stdout,
+    --         function(res) 
+    --             desk = ".desktop\n"
+    --             if res:sub(-#desk) == desk then
+    --                 awful.spawn("gtk-launch " .. res:gsub("\n",""))
+    --             else
+    --                 awful.spawn(res)
+    --             end
+    --         end) 
+    --     end)
+    -- end,
+    -- {description = "show the menubar", group = "launcher"})
 )
 
 clientkeys = gears.table.join(
@@ -568,7 +579,7 @@ root.keys(globalkeys)
 awful.rules.rules = {
     -- All clients will match this rule.
     { rule = { },
-      properties = { border_width = beautiful.border_width,
+      properties = { border_width = 2,
                      border_color = beautiful.border_normal,
                      size_hints_honor = false,
                      focus = awful.client.focus.filter,
