@@ -323,7 +323,7 @@ globalkeys = gears.table.join(
     awful.key({ modkey, }, "i", function() awful.util.spawn("gtk-launch jetbrains-idea-ce.desktop") end,
         { description = "open idea", group = "applications" }),
     awful.key({}, "Print", function() awful.util.spawn("flameshot gui") end,
-        { description = "increase volume", group = "applications" }),
+        { description = "print screen with flameshot", group = "applications" }),
     awful.key({}, "XF86AudioRaiseVolume", function() awful.util.spawn("pamixer --allow-boost -i 10") end,
         { description = "increase volume", group = "applications" }),
     awful.key({}, "XF86AudioLowerVolume", function() awful.util.spawn("pamixer -d 10") end,
