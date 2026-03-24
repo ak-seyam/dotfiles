@@ -58,7 +58,7 @@ bindsym $mod+w exec $browser
 bindsym $mod+p exec $(echo -e "i3lock\npoweroff\nreboot" | dmenu)
 
 # launch clipboard manager
-bindsym $mod+c exec clipmenu
+bindsym $mod+v exec clipmenu
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
