@@ -60,6 +60,9 @@ bindsym $mod+p exec $(echo -e "i3lock\npoweroff\nreboot" | dmenu)
 # launch clipboard manager
 bindsym $mod+v exec clipmenu
 
+# launch workflow selector
+bindsym $mod+Shift+m exec "$HOME/.config/i3/workflows.sh"
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
