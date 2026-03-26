@@ -35,9 +35,6 @@ exec --no-startup-id nm-applet
 # Load xresources
 exec --no-startup-id xrdb -merge $HOME/.Xresources
 
-# Start notification daemon
-exec --no-startup-id lxqt-notificationd
-
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
@@ -68,7 +65,7 @@ floating_modifier $mod
 
 # move tiling windows via drag & drop by left-clicking into the title bar,
 # or left-clicking anywhere into the window while holding the floating modifier.
-tiling_drag modifier titlebar
+tiling_drag modifier
 
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal

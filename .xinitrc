@@ -1,7 +1,7 @@
 picom &
 lxsession &
 udiskie &
-cbatticon &
+xfce4-power-manager &
 systemctl --user import-environment DISPLAY XAUTHORITY
 dbus-update-activation-environment --systemd DISPLAY XAUTHORITY
 export CM_DIR="$HOME/.clipmenu_cache"
