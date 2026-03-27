@@ -67,6 +67,9 @@ bindsym $mod+v exec clipmenu
 # launch workflow selector
 bindsym $mod+Shift+m exec "$HOME/.config/i3/workflows.sh"
 
+# launch workflow selector
+bindsym $mod+b exec blueman-manager
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
