@@ -12,6 +12,7 @@
 # variables
 set $mod Mod4
 set $browser google-chrome-stable
+set $filemanager nautilus
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -59,7 +60,7 @@ bindsym Print exec --no-startup-id flameshot gui
 bindsym $mod+w exec $browser
 
 # launch poweroff menu
-bindsym $mod+p exec $(echo -e "i3lock\npoweroff\nreboot" | dmenu)
+bindsym $mod+p exec "$HOME/.config/i3/powercontrol.sh"
 
 # launch clipboard manager
 bindsym $mod+v exec clipmenu
@@ -219,6 +220,7 @@ mode "frequent_programs" {
         bindsym z exec zoom
         bindsym a exec anki
         bindsym b exec blueman-manager
+        bindsym f exec $filemanager
         bindsym Return mode "default"
         bindsym Escape mode "default"
         bindsym $mod+m mode "default"
