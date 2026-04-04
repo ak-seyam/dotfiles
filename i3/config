@@ -68,7 +68,13 @@ bindsym $mod+v exec clipmenu
 # launch workflow selector
 bindsym $mod+Shift+m exec "$HOME/.config/i3/workflows.sh"
 
-# launch workflow selector
+# focus on current window while keeping the other window visable
+bindsym $mod+n exec i3-msg "resize set width 70 ppt"
+
+# resize to 50 50
+bindsym $mod+Shift+n exec i3-msg "resize set width 50 ppt"
+
+# launch bluetooth selector
 bindsym $mod+b exec blueman-manager
 
 # Use Mouse+$mod to drag floating windows to their wanted position

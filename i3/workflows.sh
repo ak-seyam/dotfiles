@@ -5,7 +5,6 @@ LANGUAGE_STUDY="language study"
 JVM_PROGRAMMING="JVM programming"
 
 WORKFLOW=$(echo -e "$LANGUAGE_STUDY\n$JVM_PROGRAMMING" | dmenu -i -p "Select your workflow")
-echo $WORKFLOW
 
 function close_all() {
     local MAX_RETRIES=10
