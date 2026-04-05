@@ -69,10 +69,10 @@ bindsym $mod+v exec clipmenu
 bindsym $mod+Shift+m exec "$HOME/.config/i3/workflows.sh"
 
 # focus on current window while keeping the other window visable
-bindsym $mod+n exec i3-msg "resize set width 70 ppt"
+bindsym $mod+n resize set width 70 ppt
 
 # resize to 50 50
-bindsym $mod+Shift+n exec i3-msg "resize set width 50 ppt"
+bindsym $mod+Shift+n resize set width 50 ppt
 
 # launch bluetooth selector
 bindsym $mod+b exec blueman-manager
@@ -201,16 +201,14 @@ mode "resize" {
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
-        bindsym l resize shrink width 10 px or 10 ppt
-        bindsym j resize grow height 10 px or 10 ppt
-        bindsym k resize shrink height 10 px or 10 ppt
-        bindsym h resize grow width 10 px or 10 ppt
-
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
+        bindsym l        resize grow   right 10 px or 10 ppt
+        bindsym Shift+l  resize shrink right 10 px or 10 ppt
+        bindsym j        resize grow   down  10 px or 10 ppt
+        bindsym Shift+j  resize shrink down  10 px or 10 ppt
+        bindsym k        resize grow   up    10 px or 10 ppt
+        bindsym Shift+k  resize shrink up    10 px or 10 ppt
+        bindsym h        resize grow   left  10 px or 10 ppt
+        bindsym Shift+h  resize shrink left  10 px or 10 ppt
 
         # back to normal: Enter or Escape or $mod+r
         bindsym Return mode "default"
@@ -221,12 +219,12 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 mode "frequent_programs" {
-        bindsym v exec virtualbox
-        bindsym i exec dex $(ls $HOME/.local/share/applications/jetbrains-idea* )
-        bindsym z exec zoom
-        bindsym a exec anki
-        bindsym b exec blueman-manager
-        bindsym f exec $filemanager
+        bindsym v exec virtualbox; mode "default"
+        bindsym i exec dex $(ls $HOME/.local/share/applications/jetbrains-idea* ); mode "default"
+        bindsym z exec zoom; mode "default"
+        bindsym a exec anki; mode "default"
+        bindsym b exec blueman-manager; mode "default"
+        bindsym f exec $filemanager; mode "default"
         bindsym Return mode "default"
         bindsym Escape mode "default"
         bindsym $mod+m mode "default"
