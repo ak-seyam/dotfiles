@@ -77,6 +77,9 @@ bindsym $mod+Shift+n resize set width 50 ppt
 # launch bluetooth selector
 bindsym $mod+b exec blueman-manager
 
+# zoom
+bindsym $mod+z exec boomer
+
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
