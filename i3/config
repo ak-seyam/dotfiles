@@ -78,7 +78,7 @@ bindsym $mod+Shift+n resize set width 50 ppt
 bindsym $mod+b exec blueman-manager
 
 # zoom
-bindsym $mod+z exec boomer
+bindsym $mod+bracketleft exec pgrep -x "boomer" || boomer
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
